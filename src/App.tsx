@@ -18,7 +18,17 @@ const tree = [
 		children: [
 			{
 				title: "Mandarin",
-				path: "/foreign-languages/mandarin"
+				path: "/foreign-languages/mandarin",
+				children: [
+					{
+						title: "Characters",
+						path: "/foreign-languages/mandarin/characters"
+					},
+					{
+						title: "Words",
+						path: "/foreign-languages/mandarin/words"
+					}
+				]
 			},
 			{
 				title: "Japanese",
