@@ -1,0 +1,9 @@
+.note {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.content {
+	max-width: 40rem;
+}

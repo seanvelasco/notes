@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/index.tsx"></script>
+</body>
+
+</html>
+
+<style>
+  #root {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+
+  :root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #1e1e1e;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a,
+  p,
+  span,
+  button {
+    font-size: 0.875rem;
+  }
+
+  body {
+    margin: 0;
+    height: 100dvh;
+  }
+
+  a,
+  button {
+    all: unset;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .activeNote {
+    background-color: #363636;
+  }
+</style>

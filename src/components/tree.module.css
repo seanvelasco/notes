@@ -1,0 +1,34 @@
+.tree {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	width: 100%;
+}
+
+.leaf {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border-radius: 0.5rem;
+	padding: 0.25rem 0rem;
+	cursor: pointer;
+	user-select: none;
+	color: white;
+}
+
+.title {
+	padding-left: 2rem;
+}
+
+.leaf:hover {
+	background-color: #363636;
+}
+
+.chevron {
+	position: absolute;
+	color: #5a5a5a;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+}
