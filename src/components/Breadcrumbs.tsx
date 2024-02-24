@@ -26,30 +26,33 @@ const isEnd = (path: string) => {
 	return path === location.pathname
 }
 
-const Breadcrumbs = (props: { tree: Tree }) => (
-	<Show when={createPaths()} fallback={<Fallback />}>
-		{(paths) => (
-			<nav class={styles.breadcrumbs}>
-				<For each={paths()}>
-					{(path) => (
-						<>
-							<A
-								class={styles.breadcrumb}
-								href={path.href}
-								activeClass="activeBreadcrumb"
-								end={true}
-							>
-								{path.label}
-							</A>
-							<Show when={!isEnd(path.href)}>
-								<span>/</span>
-							</Show>
-						</>
-					)}
-				</For>
-			</nav>
-		)}
-	</Show>
-)
+const Breadcrumbs = (props: { tree: Tree }) => {
+	console.log(props.tree)
+	return (
+		<Show when={createPaths()} fallback={<Fallback />}>
+			{(paths) => (
+				<nav class={styles.breadcrumbs}>
+					<For each={paths()}>
+						{(path) => (
+							<>
+								<A
+									class={styles.breadcrumb}
+									href={path.href}
+									activeClass="activeBreadcrumb"
+									end={true}
+								>
+									{path.label}
+								</A>
+								<Show when={!isEnd(path.href)}>
+									<span>/</span>
+								</Show>
+							</>
+						)}
+					</For>
+				</nav>
+			)}
+		</Show>
+	)
+}
 
 export default Breadcrumbs
