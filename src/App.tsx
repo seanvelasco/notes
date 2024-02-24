@@ -1,6 +1,8 @@
 import Tree from "./components/Tree"
+import Breadcrumbs from "./components/Breadcrumbs"
 import Header from "./components/Header"
 import Sidebar from "./components/Sidebar"
+import Main from "./components/Main"
 import { type JSXElement } from "solid-js"
 
 const tree = [
@@ -43,10 +45,12 @@ export const App = (props: { children?: JSXElement }) => (
 		<Sidebar>
 			<Tree tree={tree} />
 		</Sidebar>
-		<div>
-			<Header />
+		<Main>
+			<Header>
+				<Breadcrumbs tree={tree} />
+			</Header>
 			{props.children}
-		</div>
+		</Main>
 	</>
 )
 

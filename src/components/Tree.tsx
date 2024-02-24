@@ -2,17 +2,7 @@ import { For, Show, createSignal } from "solid-js"
 import { A, useLocation } from "@solidjs/router"
 import Chevron from "./Chevron"
 import styles from "./tree.module.css"
-
-type Leaf = {
-	title: string
-	path: string
-}
-
-type Branch = {
-	children?: Tree
-} & Leaf
-
-type Tree = Branch[]
+import type { Leaf, Branch, Tree } from "../types"
 
 const depth = (path: string) =>
 	path.split("/").filter((path) => path).length - 1

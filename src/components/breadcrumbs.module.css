@@ -1,0 +1,14 @@
+.breadcrumbs {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 1rem;
+}
+
+.breadcrumb {
+	cursor: pointer;
+}
+
+.breadcrumb:hover {
+	background-color: gray;
+}
