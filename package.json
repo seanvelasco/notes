@@ -10,7 +10,9 @@
 	},
 	"dependencies": {
 		"@solidjs/router": "^0.12.4",
-		"solid-js": "^1.8.15"
+		"snarkdown": "^2.0.0",
+		"solid-js": "^1.8.15",
+		"unstorage": "^1.10.2"
 	},
 	"devDependencies": {
 		"typescript": "^5.2.2",
