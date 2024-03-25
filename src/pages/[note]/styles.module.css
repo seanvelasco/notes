@@ -2,8 +2,12 @@
 	display: flex;
 	justify-content: center;
 	width: 100%;
+	height: 100%;
+	overflow: scroll;
 }
 
 .content {
 	max-width: 40rem;
+	height: 100%;
+	padding: 1rem 2rem;
 }

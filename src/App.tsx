@@ -40,7 +40,7 @@ const tree = [
 	}
 ]
 
-export const App = (props: { children?: JSXElement }) => (
+const App = (props: { children?: JSXElement }) => (
 	<>
 		<Sidebar>
 			<Tree tree={tree} />

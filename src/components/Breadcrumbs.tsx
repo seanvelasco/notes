@@ -10,7 +10,10 @@ const createPaths = () => {
 
 	const paths = params.note?.split("/")
 
+	if (!paths) return
+
 	let breadcrumbs: { label: string; href: string }[] = []
+
 	for (const path of paths) {
 		const prev = breadcrumbs[breadcrumbs.length - 1]
 		breadcrumbs.push({

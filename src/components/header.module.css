@@ -1,7 +1,11 @@
 .header {
 	display: flex;
 	flex-direction: row;
-	height: 2rem;
+	height: 2.5rem;
+	flex-shrink: 0;
 	align-items: center;
 	justify-content: center;
+	position: sticky;
+	top: 0;
+	background-color: #1e1e1e;
 }
