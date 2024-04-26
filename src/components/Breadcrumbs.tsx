@@ -5,7 +5,7 @@ import styles from "./breadcrumbs.module.css"
 const Fallback = () => <p>No page selected</p>
 
 const createPaths = () => {
-	const params = useParams()
+	const params = useParams() // already URI-encoded
 
 	const paths = params.note?.split("/")
 
@@ -42,7 +42,7 @@ const Breadcrumbs = () => {
 									activeClass="activeBreadcrumb"
 									end={true}
 								>
-									{path.label}
+									{decodeURIComponent(path.label)}
 								</A>
 								<Show when={!isEnd(path.href)}>
 									<span

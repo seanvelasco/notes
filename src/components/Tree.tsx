@@ -8,21 +8,23 @@ import { ALLOWED_FILES } from "~/lib/constants"
 const depth = (path: string) =>
 	path.split("/").filter((path) => path).length - 1
 
-const Leaf = (props: { leaf: Leaf }) => (
-	<A
-		style={{
-			"padding-left": `${depth(props.leaf.path)}rem`
-		}}
-		href={props.leaf.path.replace(ALLOWED_FILES.MD, "")}
-		class={styles.leaf}
-		activeClass="activeNote"
-		end={true}
-	>
-		<span class={styles.title}>
-			{props.leaf.title.replace(ALLOWED_FILES.MD, "")}
-		</span>
-	</A>
-)
+const Leaf = (props: { leaf: Leaf }) => {
+	return (
+		<A
+			style={{
+				"padding-left": `${depth(props.leaf.path)}rem`
+			}}
+			href={encodeURI(props.leaf.path)}
+			class={styles.leaf}
+			activeClass="activeNote"
+			end={true}
+		>
+			<span class={styles.title}>
+				{props.leaf.title.replace(ALLOWED_FILES.MD, "")}
+			</span>
+		</A>
+	)
+}
 
 const Branch = (props: { branch: Branch }) => {
 	const location = useLocation()

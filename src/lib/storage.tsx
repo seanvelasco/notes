@@ -63,13 +63,14 @@ const StorageProvider = (props: { children: JSXElement }) => {
 	const note = () => {
 		const location = useLocation()
 		return storage.getItem(
-			location.pathname + ALLOWED_FILES.MD
+			decodeURIComponent(location.pathname) + ALLOWED_FILES.MD
 		) as Promise<string>
 	}
 
 	onMount(async () => {
 		let notes = await storage.getKeys()
 		notes = notes.filter((note) => note.endsWith(ALLOWED_FILES.MD))
+		notes = notes.map((note) => note.replace(ALLOWED_FILES.MD, ""))
 		setNotes(createDirectoryTree(notes))
 	})
 
@@ -87,7 +88,6 @@ const StorageProvider = (props: { children: JSXElement }) => {
 
 const useStorage = () => {
 	const storage = useContext(StorageContext!)
-	console.log("storage", storage)
 
 	if (!storage) {
 		throw new Error("useStorage must be used within a StorageProvider")
