@@ -45,7 +45,7 @@ const StorageContext = createContext<Storage>()
 
 const StorageProvider = (props: { children: JSXElement }) => {
 	const options = {
-		repo: "seanvelasco/memegraph",
+		repo: "seanvelasco/notes-storage",
 		branch: "main",
 		dir: "/"
 	}
