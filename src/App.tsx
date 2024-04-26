@@ -1,13 +1,19 @@
-import Tree from "./components/Tree"
-import Breadcrumbs from "./components/Breadcrumbs"
-import Header from "./components/Header"
-import Sidebar from "./components/Sidebar"
-import Main from "./components/Main"
-import { useStorage } from "./lib/storage"
-import type { JSXElement } from "solid-js"
+import { Suspense } from "solid-js"
+import { Router, Route, RouteSectionProps } from "@solidjs/router"
+import { StorageProvider, useStorage } from "~/lib/storage"
+import Home from "~/pages"
+import Search from "~/pages/search"
+import Note, { loadNote } from "~/pages/[note]"
+import NotFound from "~/pages/404"
+import Tree from "~/components/Tree"
+import Breadcrumbs from "~/components/Breadcrumbs"
+import Header from "~/components/Header"
+import Sidebar from "~/components/Sidebar"
+import Main from "~/components/Main"
 
-const App = (props: { children?: JSXElement }) => {
+const Root = (props: RouteSectionProps) => {
 	const { notes } = useStorage()
+
 	return (
 		<>
 			<Sidebar>
@@ -17,12 +23,21 @@ const App = (props: { children?: JSXElement }) => {
 				<Header>
 					<Breadcrumbs />
 				</Header>
-				{props.children}
+				<Suspense>{props.children}</Suspense>
 			</Main>
-			{/* <Sidebar background="inherit">
-				<Table chapters={[]} />
-			</Sidebar> */}
 		</>
 	)
 }
+
+const App = () => (
+	<StorageProvider>
+		<Router root={Root}>
+			<Route path="/" component={Home} />
+			<Route path="/search" component={Search} />
+			<Route path="/*note" component={Note} load={loadNote} />
+			<Route path="*404" component={NotFound} />
+		</Router>
+	</StorageProvider>
+)
+
 export default App

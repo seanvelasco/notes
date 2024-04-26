@@ -53,33 +53,39 @@ const createDirectoryTree = (paths: string[]) => {
 const StorageContext = createContext<Storage>()
 
 const StorageProvider = (props: { children: JSXElement }) => {
-	const github = createStorage({
-		driver: driver({
-			repo: "seanvelasco/notes-storage",
-			branch: "main",
-			dir: "/"
-		})
-	})
+	const options = {
+		repo: "seanvelasco/memegraph",
+		branch: "main",
+		dir: "/"
+	}
+
+	const storage = createStorage({ driver: driver(options) })
+
+	if (!storage) {
+		throw new Error(
+			`Failed to create storage, unable to connect to ${options.repo}`
+		)
+	}
 
 	const [notes, setNotes] = createSignal<Node[]>([])
 
 	const note = () => {
 		const location = useLocation()
-		return github.getItem(location.pathname) as Promise<string>
+		return storage.getItem(location.pathname) as Promise<string>
 	}
 
 	onMount(async () => {
-		let notes = await github.getKeys()
+		let notes = await storage.getKeys()
 		setNotes(createDirectoryTree(notes))
 	})
 
-	const storage = {
-		notes,
-		note
-	}
-
 	return (
-		<StorageContext.Provider value={storage}>
+		<StorageContext.Provider
+			value={{
+				notes,
+				note
+			}}
+		>
 			{props.children}
 		</StorageContext.Provider>
 	)
@@ -87,6 +93,7 @@ const StorageProvider = (props: { children: JSXElement }) => {
 
 const useStorage = () => {
 	const storage = useContext(StorageContext!)
+	console.log("storage", storage)
 
 	if (!storage) {
 		throw new Error("useStorage must be used within a StorageProvider")

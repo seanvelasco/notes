@@ -4,19 +4,20 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
-		"build": "tsc && vite build",
-		"preview": "vite preview"
+		"dev": "vinxi dev",
+		"build": "vinxi build",
+		"start": "vinxi start"
 	},
 	"dependencies": {
-		"@solidjs/router": "^0.12.4",
+		"@solidjs/meta": "^0.29.3",
+		"@solidjs/router": "^0.13.2",
+		"@solidjs/start": "^1.0.0-rc.0",
 		"snarkdown": "^2.0.0",
-		"solid-js": "^1.8.15",
-		"unstorage": "^1.10.2"
+		"solid-js": "^1.8.16",
+		"unstorage": "^1.10.2",
+		"vinxi": "^0.3.11"
 	},
-	"devDependencies": {
-		"typescript": "^5.2.2",
-		"vite": "^5.1.4",
-		"vite-plugin-solid": "^2.10.1"
+	"engines": {
+		"node": ">=18"
 	}
 }
