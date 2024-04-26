@@ -18,7 +18,9 @@ const Leaf = (props: { leaf: Leaf }) => (
 		activeClass="activeNote"
 		end={true}
 	>
-		<span class={styles.title}>{props.leaf.title}</span>
+		<span class={styles.title}>
+			{props.leaf.title.replace(ALLOWED_FILES.MD, "")}
+		</span>
 	</A>
 )
 
