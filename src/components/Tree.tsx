@@ -3,6 +3,7 @@ import { A, useLocation } from "@solidjs/router"
 // import Chevron from "./Chevron"
 import styles from "./tree.module.css"
 import type { Leaf, Branch, Tree } from "../types"
+import { ALLOWED_FILES } from "~/lib/constants"
 
 const depth = (path: string) =>
 	path.split("/").filter((path) => path).length - 1
@@ -12,7 +13,7 @@ const Leaf = (props: { leaf: Leaf }) => (
 		style={{
 			"padding-left": `${depth(props.leaf.path)}rem`
 		}}
-		href={props.leaf.path}
+		href={props.leaf.path.replace(ALLOWED_FILES.MD, "")}
 		class={styles.leaf}
 		activeClass="activeNote"
 		end={true}

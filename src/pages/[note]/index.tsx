@@ -21,10 +21,6 @@ const NotePage = () => {
 			<Show when={note()}>
 				{(note) => <Markdown markdown={note()} />}
 			</Show>
-			<div>
-				<button>Save</button>
-				<button>Delete</button>
-			</div>
 		</div>
 	)
 }

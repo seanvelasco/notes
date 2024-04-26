@@ -8,17 +8,8 @@ import {
 import { createStorage } from "unstorage"
 import driver from "unstorage/drivers/github"
 import { useLocation } from "@solidjs/router"
-
-interface Storage {
-	notes: () => Node[]
-	note: () => Promise<string>
-}
-
-type Node = {
-	title: string
-	path: string
-	children: Node[]
-}
+import { ALLOWED_FILES } from "~/lib/constants"
+import type { Storage, Node } from "../types.d.ts"
 
 const createDirectoryTree = (paths: string[]) => {
 	const tree: Node[] = []
@@ -71,11 +62,14 @@ const StorageProvider = (props: { children: JSXElement }) => {
 
 	const note = () => {
 		const location = useLocation()
-		return storage.getItem(location.pathname) as Promise<string>
+		return storage.getItem(
+			location.pathname + ALLOWED_FILES.MD
+		) as Promise<string>
 	}
 
 	onMount(async () => {
 		let notes = await storage.getKeys()
+		notes = notes.filter((note) => note.endsWith(ALLOWED_FILES.MD))
 		setNotes(createDirectoryTree(notes))
 	})
 
