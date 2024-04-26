@@ -1,7 +1,6 @@
 import { Show, For } from "solid-js"
 import { A, useParams, useLocation } from "@solidjs/router"
 import styles from "./breadcrumbs.module.css"
-import type { Tree } from "../types"
 
 const Fallback = () => <p>No page selected</p>
 
@@ -29,8 +28,7 @@ const isEnd = (path: string) => {
 	return path === location.pathname
 }
 
-const Breadcrumbs = (props: { tree: Tree }) => {
-	console.log(props.tree)
+const Breadcrumbs = () => {
 	return (
 		<Show when={createPaths()} fallback={<Fallback />}>
 			{(paths) => (
@@ -47,7 +45,13 @@ const Breadcrumbs = (props: { tree: Tree }) => {
 									{path.label}
 								</A>
 								<Show when={!isEnd(path.href)}>
-									<span>/</span>
+									<span
+										style={{
+											"user-select": "none"
+										}}
+									>
+										/
+									</span>
 								</Show>
 							</>
 						)}

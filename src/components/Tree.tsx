@@ -1,6 +1,6 @@
 import { For, Show, createSignal } from "solid-js"
 import { A, useLocation } from "@solidjs/router"
-import Chevron from "./Chevron"
+// import Chevron from "./Chevron"
 import styles from "./tree.module.css"
 import type { Leaf, Branch, Tree } from "../types"
 
@@ -15,6 +15,7 @@ const Leaf = (props: { leaf: Leaf }) => (
 		href={props.leaf.path}
 		class={styles.leaf}
 		activeClass="activeNote"
+		end={true}
 	>
 		<span class={styles.title}>{props.leaf.title}</span>
 	</A>
@@ -38,7 +39,7 @@ const Branch = (props: { branch: Branch }) => {
 				class={styles.leaf}
 				onclick={toggle}
 			>
-				<Chevron orientation={expanded() ? "bottom" : "right"} />
+				{/* <Chevron orientation={expanded() ? "bottom" : "right"} /> */}
 				<span class={styles.title}>{props.branch.title}</span>
 			</button>
 			<Show when={expanded() && props.branch.children}>

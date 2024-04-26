@@ -7,17 +7,20 @@ import Search from "./pages/search"
 import Note from "./pages/[note]"
 import { loadNote } from "./pages/[note]"
 import NotFound from "./pages/404"
+import { StorageProvider } from "./lib/storage"
 
 const root = document.getElementById("root")
 
 render(
 	() => (
-		<Router root={App}>
-			<Route path="/" component={Home} />
-			<Route path="/search" component={Search} />
-			<Route path="/*note" component={Note} load={loadNote} />
-			<Route path="*404" component={NotFound} />
-		</Router>
+		<StorageProvider>
+			<Router root={App}>
+				<Route path="/" component={Home} />
+				<Route path="/search" component={Search} />
+				<Route path="/*note" component={Note} load={loadNote} />
+				<Route path="*404" component={NotFound} />
+			</Router>
+		</StorageProvider>
 	),
 	root!
 )

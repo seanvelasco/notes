@@ -3,12 +3,15 @@
 	flex-direction: row;
 	align-items: center;
 	gap: 1rem;
+	overflow-x: auto;
+	scrollbar-width: none;
 }
 
 .breadcrumb {
 	cursor: pointer;
 	border-radius: 0.5rem;
 	padding: 0.25rem 0.5rem;
+	font-size: 0.875rem;
 }
 
 .breadcrumb:hover {

@@ -29,13 +29,20 @@
     font-weight: 400;
 
     color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #1e1e1e;
+    color: var(--text-primary);
+    background-color: var(--background-primary);
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    --background-primary: #1e1e1e;
+    --background-secondary: #262626;
+    --background-tertiary: #242424;
+    --border: #323232;
+    --text-primary: #dadada;
+    --text-secondary: #b0b0b0;
+    --link: #8aacf9;
   }
 
 
@@ -68,12 +75,18 @@
     all: unset;
   }
 
+  a {
+    cursor: pointer;
+
+  }
+
   * {
     box-sizing: border-box;
   }
 
   .activeNote {
     background-color: #363636;
+    color: var(--text-primary);
   }
 
   .activeBreadcrumb {
