@@ -60,7 +60,7 @@ const StorageProvider = (props: { children: JSXElement }) => {
 
 	const [notes, setNotes] = createSignal<Node[]>([])
 
-	const note = () => {
+	const note = async () => {
 		const location = useLocation()
 		return storage.getItem(
 			decodeURIComponent(location.pathname) + ALLOWED_FILES.MD

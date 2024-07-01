@@ -1,4 +1,4 @@
-import { Show } from "solid-js"
+import { Show, Suspense } from "solid-js"
 import { createAsync } from "@solidjs/router"
 import snarkdown from "snarkdown"
 import styles from "./styles.module.css"
@@ -12,16 +12,24 @@ const Markdown = (props: { markdown: string }) => (
 	<div class={styles.content} innerHTML={snarkdown(props.markdown)} />
 )
 
+const Spinner = () => <p>loading ,,,</p>
+
 const NotePage = () => {
 	const storage = useStorage()
 	const note = createAsync(storage.note)
 
 	return (
-		<div class={styles.note}>
-			<Show when={note()}>
-				{(note) => <Markdown markdown={note()} />}
-			</Show>
-		</div>
+		<Suspense fallback={<Spinner />}>
+			<div class={styles.note}>
+				<Show when={note()}>
+					{(note) => (
+						<Suspense fallback={<Spinner />}>
+							<Markdown markdown={note()} />
+						</Suspense>
+					)}
+				</Show>
+			</div>
+		</Suspense>
 	)
 }
 

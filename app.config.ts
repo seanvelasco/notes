@@ -2,10 +2,9 @@ import { defineConfig } from "@solidjs/start/config"
 
 export default defineConfig({
     server: {
-        preset: "cloudflare-pages",
+        preset: "cloudflare-routes",
         rollupConfig: {
             external: ["__STATIC_CONTENT_MANIFEST", "node:async_hooks"]
         }
     }
-
 })

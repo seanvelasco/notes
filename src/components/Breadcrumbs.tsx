@@ -1,8 +1,6 @@
 import { Show, For } from "solid-js"
-import { A, useParams, useLocation } from "@solidjs/router"
+import { A, useParams, useLocation, useMatch } from "@solidjs/router"
 import styles from "./breadcrumbs.module.css"
-
-const Fallback = () => <p>No page selected</p>
 
 const createPaths = () => {
 	const params = useParams() // already URI-encoded
@@ -29,8 +27,11 @@ const isEnd = (path: string) => {
 }
 
 const Breadcrumbs = () => {
+	const location = useLocation()
+	const match = useMatch(() => location.pathname)
+
 	return (
-		<Show when={createPaths()} fallback={<Fallback />}>
+		<Show when={createPaths()}>
 			{(paths) => (
 				<nav class={styles.breadcrumbs}>
 					<For each={paths()}>
@@ -44,7 +45,7 @@ const Breadcrumbs = () => {
 								>
 									{decodeURIComponent(path.label)}
 								</A>
-								<Show when={!isEnd(path.href)}>
+								<Show when={!match()}>
 									<span
 										style={{
 											"user-select": "none"
