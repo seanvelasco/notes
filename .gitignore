@@ -23,7 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-package-lock.json
 .output
 .env
 .vinxi

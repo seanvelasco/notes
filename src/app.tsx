@@ -1,10 +1,10 @@
 import { Suspense } from "solid-js"
 import { Router, Route, RouteSectionProps } from "@solidjs/router"
 import { StorageProvider, useStorage } from "~/lib/storage"
-import Home from "~/pages"
-import Search from "~/pages/search"
-import Note, { loadNote } from "~/pages/[note]"
-import NotFound from "~/pages/404"
+import Home from "~/routes"
+import Search from "~/routes/search"
+import Note, { loadNote } from "~/routes/[note]"
+import NotFound from "~/routes/404"
 import Tree from "~/components/Tree"
 import Breadcrumbs from "~/components/Breadcrumbs"
 import Header from "~/components/Header"
@@ -15,7 +15,7 @@ const Root = (props: RouteSectionProps) => {
 	const { notes } = useStorage()
 
 	return (
-		<>
+		<Suspense fallback={<p>This is a spinner</p>}>
 			<Sidebar>
 				<Tree tree={notes()} />
 			</Sidebar>
@@ -23,9 +23,9 @@ const Root = (props: RouteSectionProps) => {
 				<Header>
 					<Breadcrumbs />
 				</Header>
-				<Suspense>{props.children}</Suspense>
+				<Suspense fallback={<p>This is a spinner</p>}>{props.children}</Suspense>
 			</Main>
-		</>
+		</Suspense>
 	)
 }
 
