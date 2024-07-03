@@ -1,4 +1,4 @@
-"use server"
+// "use server"
 import { createStorage } from "unstorage"
 import driver from "unstorage/drivers/github"
 import type { Node } from "~/types"
@@ -6,20 +6,20 @@ import { ALLOWED_FILES } from "~/lib/constants"
 
 const createDirectoryTree = (paths: string[]) => {
 	const tree: Node[] = []
-	
+
 	for (const path of paths) {
 		let currentNode = tree
 		const parts = path.split(":")
 		for (const part of parts) {
 			const existingNode = currentNode.find((node) => node.title === part)
-			
+
 			if (existingNode) {
 				currentNode = existingNode.children
 			} else {
 				const nodePath = `/${parts
 					.slice(0, parts.indexOf(part) + 1)
 					.join("/")}`
-				
+
 				const node = {
 					title: part,
 					path: nodePath,
