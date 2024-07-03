@@ -1,4 +1,4 @@
-// "use server"
+"use server"
 import { createStorage } from "unstorage"
 import driver from "unstorage/drivers/github"
 import type { Node } from "~/types"
@@ -42,7 +42,8 @@ const traverseToDepth = (nodes: Node[], depth: number): Node[] => {
 const options = {
 	repo: "seanvelasco/notes-storage",
 	branch: "main",
-	dir: "/"
+	dir: "/",
+	token: import.meta.env.VITE_GITHUB_TOKEN
 }
 
 const storage = createStorage({ driver: driver(options) })
