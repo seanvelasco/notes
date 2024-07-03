@@ -12,7 +12,6 @@ export default createHandler(() => (
 						content="width=device-width, initial-scale=1"
 					/>
 					<link rel="icon" href="/favicon.svg" />
-					<link rel="stylesheet" href="/index.css" />
 					{assets}
 				</head>
 				<body>

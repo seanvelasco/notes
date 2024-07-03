@@ -11,7 +11,11 @@ export type Tree = Branch[]
 
 export interface Storage {
     notes: () => Node[]
-    note: () => Promise<string>
+    index: () => any
+    note: () => Promise<{
+        title: string,
+        content?: string
+    }>
 }
 
 export type Node = {
