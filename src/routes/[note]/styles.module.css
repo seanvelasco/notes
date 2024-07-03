@@ -1,10 +1,14 @@
 .note {
 	display: flex;
-	align-items: center;
 	flex-direction: column;
 	width: 100%;
 	gap: 1rem;
 	padding: 1rem 0;
+}
+
+.page {
+    display: flex;
+    justify-content: center;
 }
 
 .content {
@@ -12,7 +16,7 @@
 	width: 100%;
 	word-break: break-word;
 	white-space: pre-wrap;
-	padding: 0 2rem;
+	padding: 1rem 2rem;
 }
 
 .content pre {
@@ -20,4 +24,26 @@
 	padding: 1rem;
 	border-radius: 0.5rem;
 	overflow: scroll;
+}
+
+.title {
+    width: 100%;
+}
+
+.indexpage {
+    text-decoration: underline;
+    color: var(--text-secondary);
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(255, 255, 255, 0.13);
+}
+
+.index {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.empty {
+    font-style: italic;
+    color: var(--text-secondary);
 }

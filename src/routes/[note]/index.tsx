@@ -1,35 +1,66 @@
-import { Show, Suspense } from "solid-js"
-import { createAsync } from "@solidjs/router"
+import { Show, ErrorBoundary, For } from "solid-js"
+import { Title } from "@solidjs/meta"
+import {createAsync, A, cache, type RouteSectionProps } from "@solidjs/router"
 import snarkdown from "snarkdown"
+import { note, index } from '~/lib/storage'
 import styles from "./styles.module.css"
-import { useStorage } from "../../lib/storage"
 
-const getNote = (): string => ""
+const getIndex = cache(async (path: string) => index(path), "index")
 
-export const loadNote = () => getNote()
+const getNote = cache(async (path: string) => note(path), "note")
 
-const Markdown = (props: { markdown: string }) => (
-	<div class={styles.content} innerHTML={snarkdown(props.markdown)} />
-)
+export const route = {
+	load: (props: RouteSectionProps) => getNote(props.location.pathname),
+}
 
-const Spinner = () => <p>loading ,,,</p>
+const Markdown = (props: { markdown: string }) =>
+	<div style={{ display: 'contents' }} innerHTML={snarkdown(props.markdown)} />
 
-const NotePage = () => {
-	const storage = useStorage()
-	const note = createAsync(storage.note)
+const EmptyPage = () => <p class={styles.empty}>This page is empty</p>
 
+const IndexPage = (props: { path: string }) => {
+	const index = createAsync(() => getIndex(props.path))
+	return <Show when={index()}>
+		<div class={styles.index}>
+			<For each={index() as any[]}>
+				{(note) => (
+					<A class={styles.indexpage} href={note.path}>
+						{note.title}
+						<Show when={note?.children.length}>
+							{" "}
+							({note?.children.length})
+						</Show>
+					
+					</A>
+				)}
+			</For>
+		</div>
+	</Show>
+}
+
+
+const NotePage = (props: RouteSectionProps) => {
+	const note = createAsync(() => getNote(props.location.pathname))
 	return (
-		<Suspense fallback={<Spinner />}>
-			<div class={styles.note}>
-				<Show when={note()}>
-					{(note) => (
-						<Suspense fallback={<Spinner />}>
-							<Markdown markdown={note()} />
-						</Suspense>
-					)}
-				</Show>
+			<div class={styles.page}>
+				<div class={styles.content}>
+					<ErrorBoundary fallback={<EmptyPage />}>
+						<Show when={note()}>
+							{(note) => (
+								<>
+									<Title>{note().title}</Title>
+										<Show when={note().content || note().content === ""} fallback={<IndexPage path={props.location.pathname}/>}>
+											<h1 class={styles.title}>{note().title}</h1>
+											<Show when={note().content} fallback={<EmptyPage />}>
+												{content => <Markdown markdown={content()}/>}
+											</Show>
+										</Show>
+								</>
+							)}
+						</Show>
+					</ErrorBoundary>
+				</div>
 			</div>
-		</Suspense>
 	)
 }
 
