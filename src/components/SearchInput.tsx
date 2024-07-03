@@ -1,5 +1,3 @@
-const SearchInput = () => (
-    <input type="search" />
-)
+const SearchInput = () => <input type="search" />
 
-export default  SearchInput
+export default SearchInput

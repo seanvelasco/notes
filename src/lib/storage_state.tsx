@@ -3,13 +3,14 @@ import {
 	useContext,
 	createSignal,
 	onMount,
+	untrack,
 	type JSXElement
 } from "solid-js"
 import { createStorage } from "unstorage"
 import driver from "unstorage/drivers/github"
 import { useLocation } from "@solidjs/router"
 import { ALLOWED_FILES } from "~/lib/constants"
-import type { Storage, Node } from "../types.d.ts"
+import type { Storage, Node } from "~/types"
 
 const createDirectoryTree = (paths: string[]) => {
 	const tree: Node[] = []
@@ -37,13 +38,19 @@ const createDirectoryTree = (paths: string[]) => {
 			}
 		}
 	}
-
 	return tree
+}
+
+const traverseToDepth = (nodes: Node[], depth: number): Node[] => {
+	const [node] = nodes
+	if (depth === 0 || nodes.length === 0) return nodes
+	return traverseToDepth(node.children, depth - 1)
 }
 
 const StorageContext = createContext<Storage>()
 
 const StorageProvider = (props: { children: JSXElement }) => {
+	
 	const options = {
 		repo: "seanvelasco/notes-storage",
 		branch: "main",
@@ -61,10 +68,30 @@ const StorageProvider = (props: { children: JSXElement }) => {
 	const [notes, setNotes] = createSignal<Node[]>([])
 
 	const note = async () => {
-		const location = useLocation()
-		return storage.getItem(
-			decodeURIComponent(location.pathname) + ALLOWED_FILES.MD
-		) as Promise<string>
+		"use server"
+		const location = untrack(() => useLocation())
+		const path = decodeURIComponent(location.pathname)
+		const title = path.split("/").pop() || ''
+		const content = await storage.getItem<string>(path + ALLOWED_FILES.MD)
+		console.log(content)
+		if (content === undefined || content === null) return { title }
+		return { title, content }
+	}
+	
+	const index = async () => {
+		
+		console.log("I AM BEING RUN")
+		const location = untrack(() => useLocation())
+		let path = decodeURIComponent(location.pathname)
+		path = path.slice(1).replaceAll('/', ':')
+		const depth = path.split(':').length
+		let notes = await storage.getKeys(path)
+		if (!notes.length) return
+		notes = notes.filter((note) => note.endsWith(ALLOWED_FILES.MD))
+		notes = notes.map((note) => note.replace(ALLOWED_FILES.MD, ""))
+		const tree = createDirectoryTree(notes)
+		const [branch] = traverseToDepth(tree, depth - 1)
+		return branch.children
 	}
 
 	onMount(async () => {
@@ -75,12 +102,7 @@ const StorageProvider = (props: { children: JSXElement }) => {
 	})
 
 	return (
-		<StorageContext.Provider
-			value={{
-				notes,
-				note
-			}}
-		>
+		<StorageContext.Provider value={{ notes, note, index }}>
 			{props.children}
 		</StorageContext.Provider>
 	)
@@ -89,9 +111,7 @@ const StorageProvider = (props: { children: JSXElement }) => {
 const useStorage = () => {
 	const storage = useContext(StorageContext!)
 
-	if (!storage) {
-		throw new Error("useStorage must be used within a StorageProvider")
-	}
+	if (!storage) throw new Error("useStorage must be used within a StorageProvider")
 
 	return storage
 }
