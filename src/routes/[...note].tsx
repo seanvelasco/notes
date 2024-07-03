@@ -13,6 +13,8 @@ export const route = {
 	load: (props: RouteSectionProps) => getNote(props.location.pathname)
 }
 
+const NotFound = () => <h1>Note not found</h1>
+
 const Markdown = (props: { markdown: string }) => (
 	<div
 		style={{ display: "contents" }}
@@ -53,7 +55,7 @@ const NotePage = (props: RouteSectionProps) => {
 		<div class={styles.page}>
 			<div class={styles.content}>
 				<ErrorBoundary fallback={FallbackPage}>
-					<Show when={note()}>
+					<Show when={note()} fallback={<NotFound />}>
 						{(note) => (
 							<>
 								<Title>{note().title}</Title>

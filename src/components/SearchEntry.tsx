@@ -1,5 +1,3 @@
-const SearchEntry = () => (
-    <div></div>
-)
+const SearchEntry = () => <div></div>
 
-export default  SearchEntry
+export default SearchEntry
