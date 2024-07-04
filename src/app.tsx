@@ -1,6 +1,6 @@
 import "./app.css"
 import Sidebar from "~/components/Sidebar"
-import { Show, Suspense } from "solid-js"
+import { Show, Suspense, ErrorBoundary } from "solid-js"
 import { createAsync, cache, type RouteSectionProps } from "@solidjs/router"
 import { root } from "~/lib/storage"
 import Footer from "~/components/Footer"
@@ -12,27 +12,29 @@ import { Router } from "@solidjs/router"
 import { FileRoutes } from "@solidjs/start/router"
 import { MetaProvider } from "@solidjs/meta"
 
-const getRoot = cache(root, "root")
+const getRoot = cache(async () => await root(), "root")
 
 export const Root = (props: RouteSectionProps) => {
 	const root = createAsync(() => getRoot())
 	return (
-		<MetaProvider>
-			<Suspense>
-				<Sidebar>
-					<Show when={root()}>
-						{(root) => <Tree tree={root()} />}
-					</Show>
-					<Footer />
-				</Sidebar>
-				<Main>
-					<Header>
-						<Breadcrumbs />
-					</Header>
-					<Suspense>{props.children}</Suspense>
-				</Main>
-			</Suspense>
-		</MetaProvider>
+		<ErrorBoundary fallback={<p>An error occurred</p>}>
+			<MetaProvider>
+				<Suspense>
+					<Sidebar>
+						<Show when={root()}>
+							{(root) => <Tree tree={root()} />}
+						</Show>
+						<Footer />
+					</Sidebar>
+					<Main>
+						<Header>
+							<Breadcrumbs />
+						</Header>
+						<Suspense>{props.children}</Suspense>
+					</Main>
+				</Suspense>
+			</MetaProvider>
+		</ErrorBoundary>
 	)
 }
 

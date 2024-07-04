@@ -5,9 +5,9 @@ import snarkdown from "snarkdown"
 import { note, index } from "~/lib/storage"
 import styles from "./styles.module.css"
 
-const getIndex = cache(async (path: string) => index(path), "index")
+const getIndex = cache(async (path: string) => await index(path), "index")
 
-const getNote = cache(async (path: string) => note(path), "note")
+const getNote = cache(async (path: string) => await note(path), "note")
 
 export const route = {
 	load: (props: RouteSectionProps) => getNote(props.location.pathname)

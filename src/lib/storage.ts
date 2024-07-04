@@ -43,7 +43,7 @@ const options = {
 	repo: "seanvelasco/notes-storage",
 	branch: "main",
 	dir: "/",
-	token: import.meta.env.VITE_GITHUB_TOKEN
+	token: import.meta.env.VITE_GITHUB_KEY
 }
 
 const storage = createStorage({ driver: driver(options) })
@@ -60,19 +60,18 @@ export const index = async (pathname: string) => {
 	let path = decodeURIComponent(pathname)
 	path = path.slice(1).replaceAll('/', ':')
 	const depth = path.split(':').length
-	let notes = await storage.getKeys(path)
+	const notes = await storage.getKeys(path)
 	if (!notes.length) return
-	notes = notes.filter((note) => note.endsWith(ALLOWED_FILES.MD))
-	notes = notes.map((note) => note.replace(ALLOWED_FILES.MD, ""))
-	const tree = createDirectoryTree(notes)
+	let filtered = notes.filter((note) => note.endsWith(ALLOWED_FILES.MD))
+	filtered = filtered.map((note) => note.replace(ALLOWED_FILES.MD, ""))
+	const tree = createDirectoryTree(filtered)
 	const [branch] = traverseToDepth(tree, depth - 1)
 	return branch.children
 }
 
 export const root = async () => {
-	let notes = await storage.getKeys()
-	notes = notes.filter((note) => note.endsWith(ALLOWED_FILES.MD))
-	notes = notes.map((note) => note.replace(ALLOWED_FILES.MD, ""))
-	return createDirectoryTree(notes)
+	const notes = await storage.getKeys()
+	let filterted = notes.filter((note) => note.endsWith(ALLOWED_FILES.MD))
+	filterted = filterted.map((note) => note.replace(ALLOWED_FILES.MD, ""))
+	return createDirectoryTree(filterted)
 }
-
