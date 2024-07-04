@@ -21,46 +21,37 @@ const createPaths = () => {
 	return breadcrumbs
 }
 
-const isEnd = (path: string) => {
-	const location = useLocation()
-	return path === location.pathname
-}
-
-const Breadcrumbs = () => {
-	const location = useLocation()
-	const match = useMatch(() => location.pathname)
-
-	return (
-		<Show when={createPaths()}>
-			{(paths) => (
-				<nav class={styles.breadcrumbs}>
-					<For each={paths()}>
-						{(path) => (
-							<>
-								<A
-									class={styles.breadcrumb}
-									href={path.href}
-									activeClass="activeBreadcrumb"
-									end={true}
+const Breadcrumbs = () => (
+	<Show when={createPaths()}>
+		{(paths) => (
+			<nav class={styles.breadcrumbs}>
+				<For each={paths()}>
+					{(path, index) => (
+						<>
+							<A
+								class={styles.breadcrumb}
+								href={path.href}
+								activeClass="activeBreadcrumb"
+								end={true}
+							>
+								{decodeURIComponent(path.label)}
+							</A>
+							<Show when={index() < paths().length - 1}>
+								<span
+									style={{
+										"user-select": "none",
+										color: "var(--text-secondary)"
+									}}
 								>
-									{decodeURIComponent(path.label)}
-								</A>
-								<Show when={!match()}>
-									<span
-										style={{
-											"user-select": "none"
-										}}
-									>
-										/
-									</span>
-								</Show>
-							</>
-						)}
-					</For>
-				</nav>
-			)}
-		</Show>
-	)
-}
+									/
+								</span>
+							</Show>
+						</>
+					)}
+				</For>
+			</nav>
+		)}
+	</Show>
+)
 
 export default Breadcrumbs

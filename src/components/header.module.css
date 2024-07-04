@@ -7,5 +7,5 @@
 	justify-content: center;
 	position: sticky;
 	top: 0;
-	background-color: #1e1e1e;
+	background-color: var(--background-primary);
 }

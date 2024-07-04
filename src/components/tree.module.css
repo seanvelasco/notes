@@ -3,6 +3,7 @@
 	flex-direction: column;
 	gap: 0.25rem;
 	width: 100%;
+	padding: 1rem;
 }
 
 .leaf {
