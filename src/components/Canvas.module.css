@@ -1,0 +1,19 @@
+.page {
+	display: flex;
+	justify-content: center;
+}
+
+.content {
+	max-width: 60rem;
+	width: 100%;
+	word-break: break-word;
+	white-space: pre-wrap;
+	padding: 1rem 2rem;
+}
+
+.content pre {
+	background-color: #262626;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	overflow: scroll;
+}

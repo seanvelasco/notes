@@ -1,7 +1,8 @@
 import { Title, Meta, Link } from "@solidjs/meta"
+import { BASE_URL } from "~/lib/constants"
 
 const Home = () => {
-	const title = "Notes - notes.sean.app"
+	const title = `Notes - ${BASE_URL}`
 	const description = "Notes by Sean Velasco"
 	return (
 		<>
@@ -9,7 +10,8 @@ const Home = () => {
 			<Meta name="description" content={description} />
 			<Meta name="og:title" content={title} />
 			<Meta name="og:description" content={description} />
-			<Link rel="canonical" href="https://notes.sean.app" />
+			<Link rel="canonical" href={`https://${BASE_URL}`} />
+			<p>wo yao ni</p>
 		</>
 	)
 }

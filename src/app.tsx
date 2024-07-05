@@ -13,6 +13,7 @@ import Main from "~/components/Main"
 import Header from "~/components/Header"
 import Breadcrumbs from "~/components/Breadcrumbs"
 import Tree from "~/components/Tree"
+import Canvas from "./components/Canvas"
 import { root } from "~/lib/storage"
 import "./app.css"
 
@@ -37,7 +38,9 @@ export const Root = (props: RouteSectionProps) => {
 						<Header>
 							<Breadcrumbs />
 						</Header>
-						<Suspense>{props.children}</Suspense>
+						<Suspense>
+							<Canvas>{props.children}</Canvas>
+						</Suspense>
 					</Main>
 				</Suspense>
 			</MetaProvider>
