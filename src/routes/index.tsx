@@ -1,12 +1,14 @@
 import { Title, Meta, Link } from "@solidjs/meta"
 
 const Home = () => {
+	const title = "Notes - notes.sean.app"
+	const description = "Notes by Sean Velasco"
 	return (
 		<>
-			<Title>Notes - notes.sean.app</Title>
-			<Meta name="description" content="Notes by Sean Velasco" />
-			<Meta name="og:title" content="Notes - notes.sean.app" />
-			<Meta name="og:description" content="Notes by Sean Velasco" />
+			<Title>{title}</Title>
+			<Meta name="description" content={description} />
+			<Meta name="og:title" content={title} />
+			<Meta name="og:description" content={description} />
 			<Link rel="canonical" href="https://notes.sean.app" />
 		</>
 	)
