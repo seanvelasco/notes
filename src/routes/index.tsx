@@ -11,7 +11,6 @@ const Home = () => {
 			<Meta name="og:title" content={title} />
 			<Meta name="og:description" content={description} />
 			<Link rel="canonical" href={`https://${BASE_URL}`} />
-			<p>wo yao ni</p>
 		</>
 	)
 }
