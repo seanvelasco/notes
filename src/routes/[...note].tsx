@@ -1,5 +1,5 @@
 import { Show, ErrorBoundary, For } from "solid-js"
-import { Title } from "@solidjs/meta"
+import { Title, Meta, Link } from "@solidjs/meta"
 import { createAsync, A, cache, type RouteSectionProps } from "@solidjs/router"
 import snarkdown from "snarkdown"
 import { note, index } from "~/lib/storage"
@@ -13,7 +13,13 @@ export const route = {
 	load: (props: RouteSectionProps) => getNote(props.location.pathname)
 }
 
-const NotFound = () => <h1>Note not found</h1>
+const NotFound = () => (
+	<>
+		<Title>Not found - notes.sean.app</Title>
+		<Meta name="og:title" content="Not found - notes.sean.app" />
+		<h1>Note not found</h1>
+	</>
+)
 
 const Markdown = (props: { markdown: string }) => (
 	<div
@@ -51,6 +57,11 @@ const IndexPage = (props: { path: string }) => {
 
 const NotePage = (props: RouteSectionProps) => {
 	const note = createAsync(() => getNote(props.location.pathname))
+
+	if (!note()) {
+		throw new Error("we")
+	}
+
 	return (
 		<div class={styles.page}>
 			<div class={styles.content}>
@@ -58,7 +69,18 @@ const NotePage = (props: RouteSectionProps) => {
 					<Show when={note()} fallback={<NotFound />}>
 						{(note) => (
 							<>
-								<Title>{note().title}</Title>
+								<p>{JSON.stringify(note())}</p>
+								<Title>{`${
+									note().title
+								} - notes.sean.app`}</Title>
+								<Meta
+									name="og:title"
+									content={`${note().title} - notes.sean.app`}
+								/>
+								<Link
+									rel="canonical"
+									href={`https://notes.sean.app/${props.location.pathname}`}
+								/>
 								<Show
 									when={
 										note().content || note().content === ""

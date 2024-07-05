@@ -52,7 +52,8 @@ export const note = async (pathname: string) => {
 	const path = decodeURIComponent(pathname)
 	const title = path.split("/").pop() || ''
 	const content = await storage.getItem<string>(path + ALLOWED_FILES.MD)
-	if (content === undefined || content === null) return { title }
+	if (content === undefined || content === null) return
+
 	return { title, content }
 }
 
