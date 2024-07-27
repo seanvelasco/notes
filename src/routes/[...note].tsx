@@ -129,32 +129,9 @@ const TableOfContents = (props: {
 }
 
 const NotePage = (props: RouteSectionProps) => {
-	// const [tableOfContents, setTableOfContents] = createSignal<TocItem[]>()
 	const note = createAsync(() => getNote(props.location.pathname))
 	const subject = () => getTitle(props.location.pathname)
 	const title = () => `${subject()} - ${BASE_URL}`
-
-	// const toc = () => {}
-
-	// if (props.location.pathname) {
-	// 	if (ref()) {
-	// 		setTableOfContents(createTableOfContents(ref()))
-	// 	}
-	// }
-
-	// onMount(() => {
-	// 	if (ref()) {
-	// 		setTableOfContents(createTableOfContents(ref()))
-	// 	}
-	// })
-
-	// let ref: HTMLDivElement | undefined
-
-	// createEffect(() => {
-	// 	if (props.location.pathname) {
-	// 		console.log(ref?.textContent)
-	// 	}
-	// })
 
 	return (
 		<ErrorBoundary fallback={(error) => <FallbackPage error={error} />}>
@@ -166,7 +143,7 @@ const NotePage = (props: RouteSectionProps) => {
 					props.location.pathname
 				)}`}
 			/>
-			<TableOfContents contentsRef={ref()} />
+			{/* <TableOfContents contentsRef={ref()} /> */}
 			<h1 class={styles.title}>{subject()}</h1>
 			<Show
 				when={note()}
