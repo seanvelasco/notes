@@ -13,6 +13,8 @@ import { note, index } from "~/lib/storage"
 import styles from "./styles.module.css"
 import { BASE_URL } from "~/lib/constants"
 import { HttpStatusCode } from "@solidjs/start"
+import katex from "katex"
+import "katex/dist/katex.min.css"
 
 const [ref, setRef] = createSignal<HTMLDivElement | undefined>()
 
@@ -36,15 +38,58 @@ const NotFound = () => (
 	</>
 )
 
-const Markdown = (props: {
-	markdown: string
-	// ref: HTMLDivElement | undefined
-}) => {
+const replace = (markdown: string, pattern: RegExp) =>
+	markdown.replace(pattern, (_, equation) =>
+		katex.renderToString(equation, {
+			displayMode: true,
+			output: "html"
+		})
+	)
+
+const replace2 = (markdown: string, pattern: RegExp) =>
+	markdown.replace(pattern, (_, equation) => {
+		try {
+			katex.renderToString(equation, {
+				displayMode: false,
+				output: "html",
+				throwOnError: false
+			})
+		} catch (error) {
+			console.log(error)
+		}
+		return katex.renderToString(equation, {
+			displayMode: false,
+			output: "html",
+			throwOnError: false
+		})
+	})
+
+const snarkdownWithP = (md: string) => {
+	const htmls = md
+		.split(/(?:\r?\n){2,}/)
+		.map((l) =>
+			[" ", "\t", "#", "-", "*"].some((ch) => l.startsWith(ch))
+				? snarkdown(l)
+				: `<p>${snarkdown(l)}</p>`
+		)
+
+	return htmls.join("\n\n")
+}
+
+const Markdown = (props: { markdown: string }) => {
+	const latexBlockRegExp = /\$\$(.*?)\$\$/g
+	const latexInlineRegExp = /\$([^$]+)\$/g
+
+	let markdown = replace(props.markdown, latexBlockRegExp)
+	markdown = replace2(markdown, latexInlineRegExp)
+	const html = snarkdownWithP(markdown)
+
 	return (
 		<div
+			class={styles.markdown}
 			ref={(el) => setRef(el)}
 			style={{ display: "contents" }}
-			innerHTML={snarkdown(props.markdown)}
+			innerHTML={html}
 		/>
 	)
 }

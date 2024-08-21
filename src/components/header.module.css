@@ -8,4 +8,5 @@
 	position: sticky;
 	top: 0;
 	background-color: var(--background-primary);
+	z-index: 3;
 }

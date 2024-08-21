@@ -4,6 +4,7 @@
 
 @media (min-width: 768px) {
 	.sidebar {
+		font-size: 0.875rem;
 		display: flex;
 		flex-direction: column;
 		min-width: 18rem;

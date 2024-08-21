@@ -21,29 +21,12 @@
 	-moz-osx-font-smoothing: grayscale;
 	--background-primary: #1e1e1e;
 	--background-secondary: #262626;
-	--background-tertiary: #242424;
+	--background-tertiary: #363636;
+
 	--border: #323232;
 	--text-primary: #dadada;
 	--text-secondary: #b0b0b0;
 	--link: #8aacf9;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-	margin: 0;
-	margin-bottom: 1rem;
-}
-
-a,
-p,
-span,
-button {
-	font-size: 0.875rem;
 }
 
 body {
@@ -65,7 +48,7 @@ a {
 }
 
 .activeNote {
-	background-color: #363636;
+	background-color: var(--background-tertiary);
 	color: var(--text-primary);
 }
 
