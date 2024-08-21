@@ -1,13 +1,12 @@
 .page {
 	display: flex;
 	justify-content: center;
+	margin-bottom: 4rem;
 }
 
 .content {
 	max-width: 60rem;
 	width: 100%;
-	word-break: break-word;
-	white-space: pre-wrap;
 	padding: 1rem 2rem;
 }
 

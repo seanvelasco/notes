@@ -19,3 +19,35 @@
 	font-style: italic;
 	color: var(--text-secondary);
 }
+
+.markdown {
+	display: contents;
+	word-break: break-word;
+}
+
+p,
+a,
+li {
+	font-size: 0.875rem;
+}
+
+br {
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+}
+
+blockquote {
+	border-left: 3px solid var(--background-tertiary);
+	margin-left: 0;
+	margin-right: 0;
+	padding: 0.5rem 0.625rem;
+}
+blockquote p {
+	display: inline-block;
+}

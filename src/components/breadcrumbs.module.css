@@ -15,5 +15,5 @@
 }
 
 .breadcrumb:hover {
-	background-color: #363636;
+	background-color: var(--background-tertiary);
 }
