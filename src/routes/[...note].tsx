@@ -38,31 +38,22 @@ const NotFound = () => (
 	</>
 )
 
-const replace = (markdown: string, pattern: RegExp) =>
-	markdown.replace(pattern, (_, equation) =>
+const latexBlock = (markdown: string) =>
+	markdown.replace(/\$\$(.*?)\$\$/g, (_, equation) =>
 		katex.renderToString(equation, {
 			displayMode: true,
 			output: "html"
 		})
 	)
 
-const replace2 = (markdown: string, pattern: RegExp) =>
-	markdown.replace(pattern, (_, equation) => {
-		try {
-			katex.renderToString(equation, {
-				displayMode: false,
-				output: "html",
-				throwOnError: false
-			})
-		} catch (error) {
-			console.log(error)
-		}
-		return katex.renderToString(equation, {
+const latexInline = (markdown: string) =>
+	markdown.replace(/\$([^$]+)\$/g, (_, equation) =>
+		katex.renderToString(equation, {
 			displayMode: false,
 			output: "html",
 			throwOnError: false
 		})
-	})
+	)
 
 const snarkdownWithP = (md: string) => {
 	const htmls = md
@@ -77,19 +68,12 @@ const snarkdownWithP = (md: string) => {
 }
 
 const Markdown = (props: { markdown: string }) => {
-	const latexBlockRegExp = /\$\$(.*?)\$\$/g
-	const latexInlineRegExp = /\$([^$]+)\$/g
-
-	let markdown = replace(props.markdown, latexBlockRegExp)
-	markdown = replace2(markdown, latexInlineRegExp)
-	const html = snarkdownWithP(markdown)
-
 	return (
 		<div
 			class={styles.markdown}
 			ref={(el) => setRef(el)}
 			style={{ display: "contents" }}
-			innerHTML={html}
+			innerHTML={snarkdownWithP(latexInline(latexBlock(props.markdown)))}
 		/>
 	)
 }
