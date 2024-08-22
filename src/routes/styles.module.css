@@ -27,7 +27,8 @@
 
 p,
 a,
-li {
+li,
+blockquote {
 	font-size: 0.875rem;
 }
 
