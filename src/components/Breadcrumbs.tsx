@@ -1,5 +1,5 @@
 import { Show, For } from "solid-js"
-import { A, useParams, useLocation, useMatch } from "@solidjs/router"
+import { A, useParams } from "@solidjs/router"
 import styles from "./breadcrumbs.module.css"
 
 const createPaths = () => {
@@ -9,7 +9,7 @@ const createPaths = () => {
 
 	if (!paths) return
 
-	let breadcrumbs: { label: string; href: string }[] = []
+	const breadcrumbs: { label: string; href: string }[] = []
 
 	for (const path of paths) {
 		const prev = breadcrumbs[breadcrumbs.length - 1]
@@ -18,6 +18,7 @@ const createPaths = () => {
 			href: prev ? prev.href + `/${path}` : `/${path}`
 		})
 	}
+
 	return breadcrumbs
 }
 
@@ -37,14 +38,7 @@ const Breadcrumbs = () => (
 								{decodeURIComponent(path.label)}
 							</A>
 							<Show when={index() < paths().length - 1}>
-								<span
-									style={{
-										"user-select": "none",
-										color: "var(--text-secondary)"
-									}}
-								>
-									/
-								</span>
+								<span class={styles.divider}>/</span>
 							</Show>
 						</>
 					)}

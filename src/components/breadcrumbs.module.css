@@ -5,6 +5,7 @@
 	gap: 0.5rem;
 	overflow-x: auto;
 	scrollbar-width: none;
+	user-select: none;
 }
 
 .breadcrumb {
@@ -16,4 +17,8 @@
 
 .breadcrumb:hover {
 	background-color: var(--background-tertiary);
+}
+
+.divider {
+	color: var(--text-secondary);
 }
