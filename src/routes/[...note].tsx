@@ -1,19 +1,12 @@
-import {
-	Show,
-	ErrorBoundary,
-	For,
-	createSignal,
-	onMount,
-	createEffect
-} from "solid-js"
+import { Show, ErrorBoundary, For, createSignal } from "solid-js"
 import { Title, Meta, Link } from "@solidjs/meta"
 import { createAsync, A, cache, type RouteSectionProps } from "@solidjs/router"
-import snarkdown from "snarkdown"
-import { note, index } from "~/lib/storage"
-import styles from "./styles.module.css"
-import { BASE_URL } from "~/lib/constants"
 import { HttpStatusCode } from "@solidjs/start"
+import snarkdown from "snarkdown"
 import katex from "katex"
+import { note, index } from "~/lib/storage"
+import { BASE_URL } from "~/lib/constants"
+import styles from "./styles.module.css"
 import "katex/dist/katex.min.css"
 
 const [ref, setRef] = createSignal<HTMLDivElement | undefined>()
@@ -28,15 +21,6 @@ const getTitle = (path: string) =>
 export const route = {
 	load: (props: RouteSectionProps) => getNote(props.location.pathname)
 }
-
-const NotFound = () => (
-	<>
-		<HttpStatusCode code={404} />
-		<Title>Not found - notes.sean.app</Title>
-		<Meta name="og:title" content="Not found - notes.sean.app" />
-		<p class={styles.empty}>Note not found</p>
-	</>
-)
 
 const latexBlock = (markdown: string) =>
 	markdown.replace(/\$\$(.*?)\$\$/g, (_, equation) =>
@@ -78,7 +62,16 @@ const Markdown = (props: { markdown: string }) => {
 	)
 }
 
-const FallbackPage = (props: { error: any; retry?: () => void }) => (
+const NotFoundFallback = () => (
+	<>
+		<HttpStatusCode code={404} />
+		<Title>Not found - notes.sean.app</Title>
+		<Meta name="og:title" content="Not found - notes.sean.app" />
+		<p class={styles.empty}>Note not found</p>
+	</>
+)
+
+const ErrorFallbackPage = (props: { error: any; retry?: () => void }) => (
 	<>
 		<HttpStatusCode code={500} />
 		<p class={styles.empty}>
@@ -93,7 +86,7 @@ const EmptyPage = () => <p class={styles.empty}>This page is empty</p>
 const IndexPage = (props: { path: string }) => {
 	const index = createAsync(() => getIndex(props.path))
 	return (
-		<Show when={index()} fallback={<NotFound />}>
+		<Show when={index()} fallback={<NotFoundFallback />}>
 			{(index) => (
 				<div class={styles.index}>
 					<For each={index()}>
@@ -113,57 +106,15 @@ const IndexPage = (props: { path: string }) => {
 	)
 }
 
-type TocItem = { level: string; title: string; children?: TocItem[] }
-
-const createTableOfContents = (ref: HTMLDivElement | undefined) => {
-	const contents: TocItem[] = []
-	if (ref) {
-		const headings = ref.querySelectorAll("h1, h2, h3, h4, h5")
-		for (const heading of headings) {
-			const { tagName, textContent } = heading
-			if (textContent) {
-				contents.push({
-					level: tagName.substring(1, 2),
-					title: textContent
-				})
-			}
-		}
-	}
-	return contents
-}
-
-const TableOfContents = (props: {
-	contentsRef: HTMLDivElement | undefined
-}) => {
-	const [items, setItems] = createSignal<TocItem[]>([])
-
-	onMount(() => {
-		if (props.contentsRef) {
-			setItems(createTableOfContents(props.contentsRef))
-		}
-	})
-
-	return (
-		<ol>
-			<p>{JSON.stringify(props.contentsRef?.textContent)}</p>
-			<For each={items()}>
-				{(toc) => (
-					<li>
-						<button>{toc.title}</button>
-					</li>
-				)}
-			</For>
-		</ol>
-	)
-}
-
 const NotePage = (props: RouteSectionProps) => {
 	const note = createAsync(() => getNote(props.location.pathname))
 	const subject = () => getTitle(props.location.pathname)
 	const title = () => `${subject()} - ${BASE_URL}`
 
 	return (
-		<ErrorBoundary fallback={(error) => <FallbackPage error={error} />}>
+		<ErrorBoundary
+			fallback={(error) => <ErrorFallbackPage error={error} />}
+		>
 			<Title>{title()}</Title>
 			<Meta name="og:title" content={title()} />
 			<Link
@@ -189,5 +140,49 @@ const NotePage = (props: RouteSectionProps) => {
 		</ErrorBoundary>
 	)
 }
+
+// type TocItem = { level: string; title: string; children?: TocItem[] }
+
+// const createTableOfContents = (ref: HTMLDivElement | undefined) => {
+// 	const contents: TocItem[] = []
+// 	if (ref) {
+// 		const headings = ref.querySelectorAll("h1, h2, h3, h4, h5")
+// 		for (const heading of headings) {
+// 			const { tagName, textContent } = heading
+// 			if (textContent) {
+// 				contents.push({
+// 					level: tagName.substring(1, 2),
+// 					title: textContent
+// 				})
+// 			}
+// 		}
+// 	}
+// 	return contents
+// }
+
+// const TableOfContents = (props: {
+// 	contentsRef: HTMLDivElement | undefined
+// }) => {
+// 	const [items, setItems] = createSignal<TocItem[]>([])
+
+// 	onMount(() => {
+// 		if (props.contentsRef) {
+// 			setItems(createTableOfContents(props.contentsRef))
+// 		}
+// 	})
+
+// 	return (
+// 		<ol>
+// 			<p>{JSON.stringify(props.contentsRef?.textContent)}</p>
+// 			<For each={items()}>
+// 				{(toc) => (
+// 					<li>
+// 						<button>{toc.title}</button>
+// 					</li>
+// 				)}
+// 			</For>
+// 		</ol>
+// 	)
+// }
 
 export default NotePage

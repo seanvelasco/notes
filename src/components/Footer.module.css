@@ -8,6 +8,7 @@
 	position: sticky;
 	bottom: 0;
 	background-color: var(--background-secondary);
+	user-select: none;
 }
 
 .text {

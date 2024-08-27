@@ -56,3 +56,7 @@ a {
 	color: white;
 	font-weight: 500;
 }
+
+.katex span:not(.mtight) {
+	font-size: 0.875rem;
+}
