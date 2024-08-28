@@ -1,9 +1,9 @@
-import { Show, ErrorBoundary, For, createSignal } from "solid-js"
+import { createSignal, For, Show, ErrorBoundary } from "solid-js"
 import { Title, Meta, Link } from "@solidjs/meta"
 import { createAsync, A, cache, type RouteSectionProps } from "@solidjs/router"
 import { HttpStatusCode } from "@solidjs/start"
-import snarkdown from "snarkdown"
-import katex from "katex"
+import markdown from "~/lib/markdown"
+import latex from "~/lib/latex"
 import { note, index } from "~/lib/storage"
 import { BASE_URL } from "~/lib/constants"
 import styles from "./styles.module.css"
@@ -22,45 +22,13 @@ export const route = {
 	load: (props: RouteSectionProps) => getNote(props.location.pathname)
 }
 
-const latexBlock = (markdown: string) =>
-	markdown.replace(/\$\$(.*?)\$\$/g, (_, equation) =>
-		katex.renderToString(equation, {
-			displayMode: true,
-			output: "html"
-		})
-	)
-
-const latexInline = (markdown: string) =>
-	markdown.replace(/\$([^$]+)\$/g, (_, equation) =>
-		katex.renderToString(equation, {
-			displayMode: false,
-			output: "html",
-			throwOnError: false
-		})
-	)
-
-const snarkdownWithP = (md: string) => {
-	const htmls = md
-		.split(/(?:\r?\n){2,}/)
-		.map((l) =>
-			[" ", "\t", "#", "-", "*"].some((ch) => l.startsWith(ch))
-				? snarkdown(l)
-				: `<p>${snarkdown(l)}</p>`
-		)
-
-	return htmls.join("\n\n")
-}
-
-const Markdown = (props: { markdown: string }) => {
-	return (
-		<div
-			class={styles.markdown}
-			ref={(el) => setRef(el)}
-			style={{ display: "contents" }}
-			innerHTML={snarkdownWithP(latexInline(latexBlock(props.markdown)))}
-		/>
-	)
-}
+const Markdown = (props: { markdown: string }) => (
+	<div
+		class={styles.markdown}
+		ref={setRef}
+		innerHTML={markdown(latex(props.markdown))}
+	/>
+)
 
 const NotFoundFallback = () => (
 	<>
@@ -81,7 +49,7 @@ const ErrorFallbackPage = (props: { error: any; retry?: () => void }) => (
 	</>
 )
 
-const EmptyPage = () => <p class={styles.empty}>This page is empty</p>
+const EmptyPageFallback = () => <p class={styles.empty}>This page is empty</p>
 
 const IndexPage = (props: { path: string }) => {
 	const index = createAsync(() => getIndex(props.path))
@@ -130,11 +98,12 @@ const NotePage = (props: RouteSectionProps) => {
 				fallback={<IndexPage path={props.location.pathname} />}
 			>
 				{(note) => (
-					<>
-						<Show when={note().content} fallback={<EmptyPage />}>
-							{(content) => <Markdown markdown={content()} />}
-						</Show>
-					</>
+					<Show
+						when={note().content}
+						fallback={<EmptyPageFallback />}
+					>
+						{(content) => <Markdown markdown={content()} />}
+					</Show>
 				)}
 			</Show>
 		</ErrorBoundary>
