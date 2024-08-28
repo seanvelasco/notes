@@ -2,11 +2,17 @@
 	width: 100%;
 }
 
-.indexpage {
+.indexpage,
+.markdown a {
+	width: fit-content;
 	text-decoration: underline;
 	color: var(--text-secondary);
 	text-underline-offset: 3px;
 	text-decoration-color: rgba(255, 255, 255, 0.13);
+}
+
+.markdown a {
+	color: var(--link);
 }
 
 .index {
@@ -32,17 +38,6 @@ blockquote {
 	font-size: 0.875rem;
 }
 
-br {
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-}
-
 blockquote {
 	border-left: 3px solid var(--background-tertiary);
 	margin-left: 0;
@@ -51,4 +46,8 @@ blockquote {
 }
 blockquote p {
 	display: inline-block;
+}
+
+li::marker {
+	color: var(--bullet);
 }
