@@ -10,11 +10,9 @@
 	font-optical-sizing: auto;
 	line-height: 1.5;
 	font-weight: 400;
-
 	color-scheme: light dark;
 	color: var(--text-primary);
 	background-color: var(--background-primary);
-
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -22,9 +20,9 @@
 	--background-primary: #1e1e1e;
 	--background-secondary: #262626;
 	--background-tertiary: #363636;
-
-	--border: #323232;
-	--text-primary: #dadada;
+    --border-primary: #4F4F4F;
+    --border-secondary: #363636;
+    --text-primary: #dadada;
 	--text-secondary: #b0b0b0;
 	--link: #8aacf9;
 	--bullet: #666666;
