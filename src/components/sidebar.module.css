@@ -13,6 +13,6 @@
 		height: 100%;
 		background-color: var(--background-secondary);
 		overflow: scroll;
-		border-right: 1px solid var(--border);
+		border-right: 1px solid var(--border-secondary);
 	}
 }
