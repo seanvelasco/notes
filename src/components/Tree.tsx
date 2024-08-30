@@ -1,18 +1,18 @@
 import { For, Show, createSignal } from "solid-js"
 import { A, useLocation } from "@solidjs/router"
 import Chevron from "./Chevron"
+import { ALLOWED_FILES } from "~/lib/constants"
 import styles from "./tree.module.css"
 import type { Leaf, Branch, Tree } from "~/types"
-import { ALLOWED_FILES } from "~/lib/constants"
 
 const depth = (path: string) =>
 	path.split("/").filter((path) => path).length - 1
 
-const Leaf = (props: { leaf: Leaf }) => {
-	return (
-		<A
+const Leaf = (props: { leaf: Leaf }) => (
+	<A
 			style={{
-				"padding-left": `calc(${depth(props.leaf.path)}rem + 7.5px + 1.25rem)`
+				"--chevron-placeholder-with-padding": "calc(var(--chevron-placeholder) + 0.5rem)",
+				"padding-left": `calc(${depth(props.leaf.path) === 0 ? 0 : depth(props.leaf.path) + (depth(props.leaf.path) * 0.25)}rem + var(--chevron-placeholder-with-padding))`
 			}}
 			href={encodeURI(props.leaf.path)}
 			class={styles.leaf}
@@ -22,9 +22,8 @@ const Leaf = (props: { leaf: Leaf }) => {
 			<span class={styles.title}>
 				{props.leaf.title.replace(ALLOWED_FILES.MD, "")}
 			</span>
-		</A>
-	)
-}
+	</A>
+)
 
 const Branch = (props: { branch: Branch }) => {
 	const location = useLocation()
@@ -39,7 +38,7 @@ const Branch = (props: { branch: Branch }) => {
 		<>
 			<button
 				style={{
-					"padding-left": `calc(${depth(props.branch.path)}rem + 7.5px)`
+					"padding-left": `calc(${depth(props.branch.path) === 0 ? 0 : depth(props.branch.path) + (depth(props.branch.path) * 0.25)}rem)`
 				}}
 				class={styles.leaf}
 				onclick={toggle}
@@ -49,7 +48,10 @@ const Branch = (props: { branch: Branch }) => {
 			</button>
 			<Show when={expanded() && props.branch.children}>
 				{(children) => <div class={styles.line} style={{
-					"--offset": `${depth(props.branch.path) + 1}rem`,
+					"--chevron-placeholder": "1.25rem", // added owing to lack of chevron
+					"--offset": `calc(${depth(props.branch.path) === 0 ?
+						0 :
+						depth(props.branch.path) + (depth(props.branch.path) * 0.25)}rem + (var(--chevron-placeholder) / 2) + 0.5rem - 0.5px)`,
 				}}>
 					<Branches tree={children()} />
 				</div>}

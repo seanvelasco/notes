@@ -17,7 +17,6 @@ export const inline = (markdown: string) =>
         })
     )
 
+const latex = (markdown: string) => inline(block(markdown))
 
-const latext = (markdown: string) => inline(block(markdown))
-
-export default latext
+export default latex
