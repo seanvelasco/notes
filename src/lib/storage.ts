@@ -12,7 +12,6 @@ const createDirectoryTree = (paths: string[]) => {
 		const parts = path.split(":")
 		for (const part of parts) {
 			const existingNode = currentNode.find((node) => node.title === part)
-
 			if (existingNode) {
 				currentNode = existingNode.children
 			} else {
@@ -69,7 +68,7 @@ export const index = async (path: string) => {
 
 export const root = async () => {
 	const notes = await storage.getKeys()
-	let filterted = notes.filter((note) => note.endsWith(ALLOWED_FILES.MD))
-	filterted = filterted.map((note) => note.replace(ALLOWED_FILES.MD, ""))
-	return createDirectoryTree(filterted)
+	let filtered = notes.filter((note) => note.endsWith(ALLOWED_FILES.MD))
+	filtered = filtered.map((note) => note.replace(ALLOWED_FILES.MD, ""))
+	return createDirectoryTree(filtered)
 }

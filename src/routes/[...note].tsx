@@ -1,19 +1,16 @@
 import { createSignal, For, Show, ErrorBoundary } from "solid-js"
 import { Title, Meta, Link } from "@solidjs/meta"
-import { createAsync, A, cache, type RouteSectionProps } from "@solidjs/router"
+import { createAsync, A, type RouteSectionProps } from "@solidjs/router"
 import { HttpStatusCode } from "@solidjs/start"
 import markdown from "~/lib/markdown"
 import latex from "~/lib/latex"
-import { note, index } from "~/lib/storage"
 import { BASE_URL } from "~/lib/constants"
 import styles from "./styles.module.css"
 import "katex/dist/katex.min.css"
+import getNote from "~/api/getNote"
+import getIndex from "~/api/getIndex"
 
 const [ref, setRef] = createSignal<HTMLDivElement | undefined>()
-
-const getIndex = cache(async (path: string) => await index(path), "index")
-
-const getNote = cache(async (path: string) => await note(path), "note")
 
 const getTitle = (path: string) =>
 	decodeURIComponent(path).split("/").pop() || ""
@@ -51,25 +48,30 @@ const ErrorFallbackPage = (props: { error: any; retry?: () => void }) => (
 
 const EmptyPageFallback = () => <p class={styles.empty}>This page is empty</p>
 
-const IndexPage = (props: { path: string }) => {
+const IndexPage = (props: { path: string, subject: string }) => {
 	const index = createAsync(() => getIndex(props.path))
 	return (
-		<Show when={index()} fallback={<NotFoundFallback />}>
+		<Show when={index()} fallback={<NotFoundFallback/>}>
 			{(index) => (
-				<div class={styles.index}>
-					<For each={index()}>
-						{(note) => (
-							<A class={styles.indexpage} href={note.path}>
-								{note.title}
-								<Show when={note?.children.length}>
-									{" "}
-									({note?.children.length})
-								</Show>
-							</A>
-						)}
-					</For>
-				</div>
-			)}
+				<>
+					<h1 class={styles.title}>{props.subject}</h1>
+					<div class={styles.index}>
+						<For each={index()}>
+							{(note) => (
+								<A class={styles.indexpage} href={note.path}>
+									{note.title}
+									<Show when={note?.children.length}>
+										{" "}
+										({note?.children.length})
+									</Show>
+								</A>
+							)}
+						</For>
+					</div>
+					
+				</>
+			)
+			}
 		</Show>
 	)
 }
@@ -78,13 +80,12 @@ const NotePage = (props: RouteSectionProps) => {
 	const note = createAsync(() => getNote(props.location.pathname))
 	const subject = () => getTitle(props.location.pathname)
 	const title = () => `${subject()} - ${BASE_URL}`
-
 	return (
 		<ErrorBoundary
-			fallback={(error) => <ErrorFallbackPage error={error} />}
+			fallback={(error) => <ErrorFallbackPage error={error}/>}
 		>
 			<Title>{title()}</Title>
-			<Meta name="og:title" content={title()} />
+			<Meta name="og:title" content={title()}/>
 			<Link
 				rel="canonical"
 				href={`https://${BASE_URL}${decodeURIComponent(
@@ -92,18 +93,22 @@ const NotePage = (props: RouteSectionProps) => {
 				)}`}
 			/>
 			{/* <TableOfContents contentsRef={ref()} /> */}
-			<h1 class={styles.title}>{subject()}</h1>
 			<Show
 				when={note()}
-				fallback={<IndexPage path={props.location.pathname} />}
+				fallback={<IndexPage path={props.location.pathname} subject={subject()} />}
 			>
 				{(note) => (
-					<Show
-						when={note().content}
-						fallback={<EmptyPageFallback />}
-					>
-						{(content) => <Markdown markdown={content()} />}
-					</Show>
+					<>
+						<h1 class={styles.title}>{subject()}</h1>
+						<Show
+							when={note().content}
+							fallback={<EmptyPageFallback/>}
+						>
+							{(content) =>
+								<Markdown markdown={content()}/>
+							}
+						</Show>
+					</>
 				)}
 			</Show>
 		</ErrorBoundary>

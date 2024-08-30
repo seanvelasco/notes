@@ -16,13 +16,13 @@
 	cursor: pointer;
 	user-select: none;
 	color: var(--text-secondary);
-
 }
 
 .title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding-left: 0.5rem;
 }
 
 .leaf:hover {
@@ -36,6 +36,7 @@
 	align-items: center;
 	justify-content: center;
 	width: fit-content;
+    padding-left: 0.5rem;
 }
 
 .line {
