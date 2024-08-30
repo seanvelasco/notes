@@ -1,4 +1,4 @@
-import { Show, Suspense, ErrorBoundary } from "solid-js"
+import { createSignal, Show, Suspense, ErrorBoundary } from "solid-js"
 import {
 	Router,
 	createAsync,
@@ -11,33 +11,59 @@ import Sidebar from "~/components/Sidebar"
 import Footer from "~/components/Footer"
 import Main from "~/components/Main"
 import Header from "~/components/Header"
+import Toolbar from "~/components/Toolbar"
 import Breadcrumbs from "~/components/Breadcrumbs"
 import Tree from "~/components/Tree"
-import SearchPreview from "~/components/SearchPreview";
+import Favorites from "~/components/Favorites"
+import SearchPreview from "~/components/SearchPreview"
 import Canvas from "./components/Canvas"
-import { root } from "~/lib/storage"
 import "./app.css"
-
+import MenuIcon from "~/icons/Menu"
+import SearchIcon from "~/icons/Search"
+import Star from "~/icons/Star"
+import getNote from "~/api/getNote"
+import getTree from "~/api/getTree"
+import getFavorites from "~/api/getFavorites"
 // import { useTransition } from "solid-js"
-
-const getRoot = cache(async () => await root(), "root")
 
 export const Root = (props: RouteSectionProps) => {
 	// const [pending] = useTransition()
-	const root = createAsync(() => getRoot())
+	const [isSidebarOpen, setSidebarOpen] = createSignal(false)
+	const [isSearchOpen, setSearchOpen] = createSignal(false)
+	const [starred, setStarred] = createSignal(false)
+	const toggle = () => setStarred(!starred())
+	// move all these to a layout component, including components that consume them, to make use of pre-loading
+	const tree = createAsync(() => getTree())
+	const note = createAsync(() => getNote(props.location.pathname))
+	const favorites = createAsync(() => getFavorites())
+	
 	return (
 		<ErrorBoundary fallback={<p>An error occurred</p>}>
 			<MetaProvider>
 				<Suspense>
 					<Sidebar>
-						<Show when={root()}>
-							{(root) => <SearchPreview tree={root()} />}
+						<Show when={favorites()}>
+							<Favorites />
+						</Show>
+						<Show when={tree()}>
+							{(tree) => <Tree tree={tree()} />}
 						</Show>
 						<Footer />
 					</Sidebar>
 					<Main>
 						<Header>
+							<Toolbar>
+								<MenuIcon />
+								<SearchIcon />
+							</Toolbar>
 							<Breadcrumbs />
+							<Toolbar>
+								<Show when={note()}>
+									<button onClick={toggle}>
+										<Star filled={starred()}/>
+									</button>
+								</Show>
+							</Toolbar>
 						</Header>
 						<Suspense>
 							<Canvas>{props.children}</Canvas>

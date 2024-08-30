@@ -4,7 +4,7 @@
 	height: 2.5rem;
 	flex-shrink: 0;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-between;
 	position: sticky;
 	top: 0;
 	background-color: var(--background-primary);
