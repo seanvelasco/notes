@@ -1,11 +1,23 @@
-const favorites = () => {
-	// get list of paths of saved notes from localstorage
+import { makePersisted } from "@solid-primitives/storage"
+import { createStore } from "solid-js/store"
+
+// working  "@solid-primitives/storage": "^2.1.1",
+// not working, expets two diff types "@solid-primitives/storage": "^4.2.0"
+
+const [store, setStore] = makePersisted(createStore<string[]>(['']), { name: "favorites" })
+
+const getFavorites = store
+
+const favorited = (path: string) => store.includes(path)
+
+const toggleFavorite = (path: string) => {
+	if (store.includes(path))
+		setStore((paths) => paths.filter(p => p !== path))
+	else setStore((paths) => [...paths, path])
 }
 
-const favorited = () => {
-	// check if this specific path is included in the list from localstorage
-}
-
-const toggleFavorite = () => {
-	// add/remove from the list in localstorage
+export {
+	getFavorites,
+	favorited,
+	toggleFavorite
 }

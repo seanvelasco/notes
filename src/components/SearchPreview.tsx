@@ -43,7 +43,7 @@ const SearchPreview = (props: { children: JSXElement; tree: Tree }) => {
 		setSearchParams({ search: value })
 	}
 	onMount(() => {
-		ref()?.showModal()
+		if (query()) ref()?.showModal()
 	})
 	return (
 		<>
