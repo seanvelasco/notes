@@ -24,6 +24,7 @@ import Star from "~/icons/Star"
 import getNote from "~/api/getNote"
 import getTree from "~/api/getTree"
 import getFavorites from "~/api/getFavorites"
+import styles from "./app.module.css"
 // import { useTransition } from "solid-js"
 
 export const Root = (props: RouteSectionProps) => {
@@ -36,7 +37,7 @@ export const Root = (props: RouteSectionProps) => {
 	const tree = createAsync(() => getTree())
 	const note = createAsync(() => getNote(props.location.pathname))
 	const favorites = createAsync(() => getFavorites())
-	
+
 	return (
 		<ErrorBoundary fallback={<p>An error occurred</p>}>
 			<MetaProvider>
@@ -53,14 +54,22 @@ export const Root = (props: RouteSectionProps) => {
 					<Main>
 						<Header>
 							<Toolbar>
-								<MenuIcon />
-								<SearchIcon />
+								<button class={styles.menu}>
+									<MenuIcon />
+								</button>
+								<Show when={tree()}>
+									{(tree) => (
+										<SearchPreview tree={tree()}>
+											<SearchIcon />
+										</SearchPreview>
+									)}
+								</Show>
 							</Toolbar>
 							<Breadcrumbs />
 							<Toolbar>
 								<Show when={note()}>
 									<button onClick={toggle}>
-										<Star filled={starred()}/>
+										<Star filled={starred()} />
 									</button>
 								</Show>
 							</Toolbar>
