@@ -4,7 +4,8 @@ export const block = (markdown: string) =>
     markdown.replace(/\$\$(.*?)\$\$/g, (_, equation) =>
         katex.renderToString(equation, {
             displayMode: true,
-            output: "html"
+            output: "html",
+            throwOnError: false
         })
     )
 
