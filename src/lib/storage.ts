@@ -1,8 +1,8 @@
 "use server"
 import { createStorage } from "unstorage"
 import driver from "unstorage/drivers/github"
-import type { Node } from "~/types"
 import { ALLOWED_FILES } from "~/lib/constants"
+import type { Node } from "~/types"
 
 const createDirectoryTree = (paths: string[]) => {
 	const tree: Node[] = []

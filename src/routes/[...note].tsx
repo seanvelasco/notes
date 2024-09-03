@@ -48,10 +48,10 @@ const ErrorFallbackPage = (props: { error: any; retry?: () => void }) => (
 
 const EmptyPageFallback = () => <p class={styles.empty}>This page is empty</p>
 
-const IndexPage = (props: { path: string, subject: string }) => {
+const IndexPage = (props: { path: string; subject: string }) => {
 	const index = createAsync(() => getIndex(props.path))
 	return (
-		<Show when={index()} fallback={<NotFoundFallback/>}>
+		<Show when={index()} fallback={<NotFoundFallback />}>
 			{(index) => (
 				<>
 					<h1 class={styles.title}>{props.subject}</h1>
@@ -68,10 +68,8 @@ const IndexPage = (props: { path: string, subject: string }) => {
 							)}
 						</For>
 					</div>
-					
 				</>
-			)
-			}
+			)}
 		</Show>
 	)
 }
@@ -82,10 +80,10 @@ const NotePage = (props: RouteSectionProps) => {
 	const title = () => `${subject()} - ${BASE_URL}`
 	return (
 		<ErrorBoundary
-			fallback={(error) => <ErrorFallbackPage error={error}/>}
+			fallback={(error) => <ErrorFallbackPage error={error} />}
 		>
 			<Title>{title()}</Title>
-			<Meta name="og:title" content={title()}/>
+			<Meta name="og:title" content={title()} />
 			<Link
 				rel="canonical"
 				href={`https://${BASE_URL}${decodeURIComponent(
@@ -95,18 +93,21 @@ const NotePage = (props: RouteSectionProps) => {
 			{/* <TableOfContents contentsRef={ref()} /> */}
 			<Show
 				when={note()}
-				fallback={<IndexPage path={props.location.pathname} subject={subject()} />}
+				fallback={
+					<IndexPage
+						path={props.location.pathname}
+						subject={subject()}
+					/>
+				}
 			>
 				{(note) => (
 					<>
 						<h1 class={styles.title}>{subject()}</h1>
 						<Show
 							when={note().content}
-							fallback={<EmptyPageFallback/>}
+							fallback={<EmptyPageFallback />}
 						>
-							{(content) =>
-								<Markdown markdown={content()}/>
-							}
+							{(content) => <Markdown markdown={content()} />}
 						</Show>
 					</>
 				)}
