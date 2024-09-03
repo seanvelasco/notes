@@ -30,8 +30,8 @@ const Markdown = (props: { markdown: string }) => (
 const NotFoundFallback = () => (
 	<>
 		<HttpStatusCode code={404} />
-		<Title>Not found - notes.sean.app</Title>
-		<Meta name="og:title" content="Not found - notes.sean.app" />
+		<Title>Not found</Title>
+		<Meta name="og:title" content="Not found" />
 		<p class={styles.empty}>Note not found</p>
 	</>
 )
@@ -77,7 +77,7 @@ const IndexPage = (props: { path: string; subject: string }) => {
 const NotePage = (props: RouteSectionProps) => {
 	const note = createAsync(() => getNote(props.location.pathname))
 	const subject = () => getTitle(props.location.pathname)
-	const title = () => `${subject()} - ${BASE_URL}`
+	const title = () => subject()
 	return (
 		<ErrorBoundary
 			fallback={(error) => <ErrorFallbackPage error={error} />}

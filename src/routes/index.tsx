@@ -2,7 +2,7 @@ import { Title, Meta, Link } from "@solidjs/meta"
 import { BASE_URL } from "~/lib/constants"
 
 const Home = () => {
-	const title = `Notes - ${BASE_URL}`
+	const title = `Notes`
 	const description = "Notes by Sean Velasco"
 	return (
 		<>
