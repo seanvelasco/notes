@@ -14,24 +14,20 @@ import type { Tree, Branch } from "~/types"
 // 	</div>
 // )
 
-const Entry = (props: { branch: Branch }) => {
-	return (
-		<Show when={props.branch.children?.length}>
-			<A
-				href={props.branch.path}
-				class={treeStyles.leaf}
-				style={{
-					"padding-left": "1rem"
-				}}
-			>
-				<span class={styles.title}>{props.branch.title}</span>
-				<span class={styles.count}>
-					{props.branch.children!.length}
-				</span>
-			</A>
-		</Show>
-	)
-}
+const Entry = (props: { branch: Branch }) => (
+	<Show when={props.branch.children?.length}>
+		<A
+			href={props.branch.path}
+			class={treeStyles.leaf}
+			style={{
+				"padding-left": "1rem"
+			}}
+		>
+			<span class={styles.title}>{props.branch.title}</span>
+			<span class={styles.count}>{props.branch.children!.length}</span>
+		</A>
+	</Show>
+)
 
 const SearchPreview = (props: { children: JSXElement; tree: Tree }) => {
 	const [ref, setRef] = createSignal<HTMLDialogElement>()

@@ -50,7 +50,6 @@ const traverseToDepth = (nodes: Node[], depth: number): Node[] => {
 const StorageContext = createContext<Storage>()
 
 const StorageProvider = (props: { children: JSXElement }) => {
-	
 	const options = {
 		repo: "seanvelasco/notes-storage",
 		branch: "main",
@@ -71,20 +70,18 @@ const StorageProvider = (props: { children: JSXElement }) => {
 		"use server"
 		const location = untrack(() => useLocation())
 		const path = decodeURIComponent(location.pathname)
-		const title = path.split("/").pop() || ''
+		const title = path.split("/").pop() || ""
 		const content = await storage.getItem<string>(path + ALLOWED_FILES.MD)
 		console.log(content)
 		if (content === undefined || content === null) return { title }
 		return { title, content }
 	}
-	
+
 	const index = async () => {
-		
-		console.log("I AM BEING RUN")
 		const location = untrack(() => useLocation())
 		let path = decodeURIComponent(location.pathname)
-		path = path.slice(1).replaceAll('/', ':')
-		const depth = path.split(':').length
+		path = path.slice(1).replaceAll("/", ":")
+		const depth = path.split(":").length
 		let notes = await storage.getKeys(path)
 		if (!notes.length) return
 		notes = notes.filter((note) => note.endsWith(ALLOWED_FILES.MD))
@@ -111,7 +108,8 @@ const StorageProvider = (props: { children: JSXElement }) => {
 const useStorage = () => {
 	const storage = useContext(StorageContext!)
 
-	if (!storage) throw new Error("useStorage must be used within a StorageProvider")
+	if (!storage)
+		throw new Error("useStorage must be used within a StorageProvider")
 
 	return storage
 }

@@ -1,11 +1,6 @@
 import { createSignal, Show, Suspense, ErrorBoundary } from "solid-js"
-import { toggleFavorite } from "~/lib/favorites"
-import {
-	Router,
-	createAsync,
-	cache,
-	type RouteSectionProps
-} from "@solidjs/router"
+import { clientOnly } from "@solidjs/start"
+import { Router, createAsync, type RouteSectionProps } from "@solidjs/router"
 import { FileRoutes } from "@solidjs/start/router"
 import { MetaProvider } from "@solidjs/meta"
 import Sidebar from "~/components/Sidebar"
@@ -17,14 +12,12 @@ import Breadcrumbs from "~/components/Breadcrumbs"
 import Tree from "~/components/Tree"
 import SearchPreview from "~/components/SearchPreview"
 import Canvas from "./components/Canvas"
-import "./app.css"
 import MenuIcon from "~/icons/Menu"
 import SearchIcon from "~/icons/Search"
 import getNote from "~/api/getNote"
 import getTree from "~/api/getTree"
 import styles from "./app.module.css"
-import { clientOnly } from "@solidjs/start"
-import { favorited } from "~/lib/favorites"
+import "./app.css"
 const Favorites = clientOnly(() => import("~/components/Favorites"))
 const Favorited = clientOnly(() => import("~/components/Favorited"))
 
