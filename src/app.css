@@ -5,7 +5,7 @@
 }
 
 :root {
-	font-family: Inter, system-ui, Helvetica, Arial, sans-serif;
+	font-family: system-ui, Helvetica, Arial, sans-serif;
 	font-optical-sizing: auto;
 	line-height: 1.5;
 	font-weight: 400;
@@ -16,15 +16,33 @@
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	--background-primary: #1e1e1e;
-	--background-secondary: #262626;
-	--background-tertiary: #363636;
-	--border-primary: #4f4f4f;
-	--border-secondary: #363636;
-	--text-primary: #dadada;
-	--text-secondary: #b0b0b0;
-	--link: #8aacf9;
-	--bullet: #666666;
+	--background-primary: #ffffff;
+	--background-secondary: #f6f6f6;
+	--background-tertiary: #e3e3e3;
+	--border-primary: #c8c8c8;
+	--border-secondary: #e0e0e0;
+	--text-primary: #222222;
+	--text-secondary: #5c5c5c;
+	--link:  #5c82f5;
+	--bullet: #ababab;
+    --chevron: #b7b7b7;
+    --active-breadcrumb: black;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-primary: #1e1e1e;
+        --background-secondary: #262626;
+        --background-tertiary: #363636;
+        --border-primary: #4f4f4f;
+        --border-secondary: #363636;
+        --text-primary: #dadada;
+        --text-secondary: #b0b0b0;
+        --link: #8aacf9;
+        --bullet: #666666;
+        --chevron: #5a5a5a;
+        --active-breadcrumb: white;
+    }
 }
 
 body {
@@ -51,7 +69,7 @@ a {
 }
 
 .activeBreadcrumb {
-	color: white;
+	color: var(--active-breadcrumb);
 	font-weight: 500;
 }
 

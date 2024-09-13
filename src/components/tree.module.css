@@ -31,7 +31,7 @@
 
 .chevron {
 	/*position: absolute;*/
-	color: #5a5a5a;
+	color: var(--chevron);
 	display: flex;
 	align-items: center;
 	justify-content: center;
