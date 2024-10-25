@@ -2,14 +2,26 @@
 	display: none;
 }
 
+/*.resizer {*/
+/*	user-select: none;*/
+/*	cursor: col-resize;*/
+/*	position: absolute;*/
+/*	top: 0;*/
+/*	bottom: 0;*/
+/*	right: 0;*/
+/*	background-color: red;*/
+/*	width: 1px;*/
+/*}*/
+
 @media (min-width: 768px) {
 	.sidebar {
+		position: relative;
 		font-size: 0.875rem;
 		display: flex;
 		flex-direction: column;
 		min-width: 18rem;
-		max-width: 18rem;
-		width: 100%;
+		/*max-width: 18rem;*/
+		/*width: 100%;*/
 		height: 100%;
 		background-color: var(--background-secondary);
 		overflow: scroll;

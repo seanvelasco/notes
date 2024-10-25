@@ -5,10 +5,10 @@ import { HttpStatusCode } from "@solidjs/start"
 import markdown from "~/lib/markdown"
 import latex from "~/lib/latex"
 import { BASE_URL } from "~/lib/constants"
-import styles from "./styles.module.css"
-import "katex/dist/katex.min.css"
 import getNote from "~/api/getNote"
 import getIndex from "~/api/getIndex"
+import styles from "./styles.module.css"
+import "katex/dist/katex.min.css"
 
 const [ref, setRef] = createSignal<HTMLDivElement | undefined>()
 

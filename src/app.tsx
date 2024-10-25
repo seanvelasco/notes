@@ -14,6 +14,9 @@ import SearchPreview from "~/components/SearchPreview"
 import Canvas from "./components/Canvas"
 import MenuIcon from "~/icons/Menu"
 import SearchIcon from "~/icons/Search"
+import SortIcon from "~/icons/Sort"
+import CollapseIcon from "~/icons/Collapse"
+import ExpandIcon from "~/icons/Expand"
 import getNote from "~/api/getNote"
 import getTree from "~/api/getTree"
 import styles from "./app.module.css"
@@ -22,6 +25,36 @@ const Favorites = clientOnly(() => import("~/components/Favorites"))
 const Favorited = clientOnly(() => import("~/components/Favorited"))
 
 // import { useTransition } from "solid-js"
+
+const Fallback = () => <div>
+
+</div>
+
+const Side = () => {
+	const tree = createAsync(() => getTree())
+	const [expand, setExpand] = createSignal(false)
+	return (
+		<Sidebar>
+			<div class={styles.header}>
+				<button>
+					<SortIcon />
+				</button>
+				<button onClick={() => setExpand((prev) => !prev)}>
+					<Show when={expand()} fallback={<ExpandIcon/>}>
+						<CollapseIcon />
+					</Show>
+				</button>
+			</div>
+			<Favorites />
+			<ErrorBoundary fallback={<p>Unable to render tree</p>}>
+				<Show when={tree()}>
+					{(tree) => <Tree tree={tree()} />}
+				</Show>
+			</ErrorBoundary>
+			<Footer />
+		</Sidebar>
+	)
+}
 
 export const Root = (props: RouteSectionProps) => {
 	// const [pending] = useTransition()
@@ -34,40 +67,36 @@ export const Root = (props: RouteSectionProps) => {
 	const note = createAsync(() => getNote(props.location.pathname))
 
 	return (
-		<ErrorBoundary fallback={<p>An error occurred</p>}>
+		<ErrorBoundary fallback={(err) => <p>An error occurred {JSON.stringify(err)}</p>}>
 			<MetaProvider>
 				<Suspense>
-					<Sidebar>
-						<Favorites />
-						<Show when={tree()}>
-							{(tree) => <Tree tree={tree()} />}
-						</Show>
-						<Footer />
-					</Sidebar>
+					<Side />
 					<Main>
-						<Header>
-							<Toolbar>
-								<button class={styles.menu}>
-									<MenuIcon />
-								</button>
-								<Show when={tree()}>
-									{(tree) => (
-										<SearchPreview tree={tree()}>
-											<SearchIcon />
-										</SearchPreview>
-									)}
-								</Show>
-							</Toolbar>
-							<Breadcrumbs />
-							<Toolbar>
-								<Show when={note()}>
-									<Favorited path={props.location.pathname} />
-								</Show>
-							</Toolbar>
-						</Header>
-						<Suspense>
-							<Canvas>{props.children}</Canvas>
-						</Suspense>
+						<ErrorBoundary fallback={<p>Unable to render main</p>}>
+							<Header>
+								<Toolbar>
+									<button class={styles.menu}>
+										<MenuIcon />
+									</button>
+										<Show when={tree()}>
+											{(tree) => (
+												<SearchPreview tree={tree()}>
+													<SearchIcon />
+												</SearchPreview>
+											)}
+										</Show>
+								</Toolbar>
+								<Breadcrumbs />
+								<Toolbar>
+									<Show when={note()}>
+										<Favorited path={props.location.pathname} />
+									</Show>
+								</Toolbar>
+							</Header>
+							<Suspense>
+								<Canvas>{props.children}</Canvas>
+							</Suspense>
+						</ErrorBoundary>
 					</Main>
 				</Suspense>
 			</MetaProvider>
