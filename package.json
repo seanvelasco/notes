@@ -13,6 +13,8 @@
 		"@solidjs/meta": "^0.29.4",
 		"@solidjs/router": "^0.13.6",
 		"@solidjs/start": "^1.0.2",
+		"@wooorm/starry-night": "^3.5.0",
+		"hast-util-to-dom": "^4.0.0",
 		"katex": "^0.16.11",
 		"pixi-viewport": "^5.0.3",
 		"pixi.js": "^8.5.2",
