@@ -19,15 +19,15 @@
 		"pixi.js": "^8.5.2",
 		"solid-js": "^1.8.17",
 		"unstorage": "^1.10.2",
-		"vinxi": "^0.3.12"
+		"vinxi": "^0.3.12",
+		"shiki": "^1.22.2",
+		"@shikijs/markdown-it": "^1.22.2"
 	},
 	"engines": {
 		"node": ">=20"
 	},
 	"devDependencies": {
-		"@shikijs/markdown-it": "^1.22.2",
 		"@types/katex": "^0.16.7",
-		"@types/markdown-it": "^14.1.2",
-		"shiki": "^1.22.2"
+		"@types/markdown-it": "^14.1.2"
 	}
 }
