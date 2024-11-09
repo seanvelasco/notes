@@ -26,12 +26,14 @@
 }
 
 .leaf:hover {
-	background-color: var(--background-tertiary);
+	/* background-color: var(--background-tertiary); */
+	background-color: var(--leaf);
 }
 
 .chevron {
 	/*position: absolute;*/
-	color: var(--chevron);
+	color: var(--background-quaternary);
+	opacity: 0.85;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -56,5 +58,7 @@
 	left: var(--offset);
 	width: 1px;
 	height: 100%;
-	background-color: var(--border-primary);
+	/* background-color: var(--border-primary); */
+	/* background-color: red; */
+	background-color: var(--thread);
 }

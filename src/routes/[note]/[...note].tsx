@@ -1,32 +1,29 @@
-import { createSignal, For, Show, ErrorBoundary } from "solid-js"
+import { createSignal, For, Show } from "solid-js"
 import { Title, Meta, Link } from "@solidjs/meta"
 import { createAsync, A, type RouteSectionProps } from "@solidjs/router"
 import { HttpStatusCode } from "@solidjs/start"
 import markdown from "~/lib/markdown"
-import latex from "~/lib/latex"
 import { BASE_URL } from "~/lib/constants"
 import getNote from "~/api/getNote"
 import getIndex from "~/api/getIndex"
 import styles from "./styles.module.css"
-import "katex/dist/katex.min.css"
 
 const [ref, setRef] = createSignal<HTMLDivElement | undefined>()
 
 const getTitle = (path: string) =>
 	decodeURIComponent(path).split("/").pop() || ""
 
-export const route = {
-	load: (props: RouteSectionProps) => getNote(props.location.pathname)
-}
+// export const route = {
+// 	load: (props: RouteSectionProps) => getNote(props.location.pathname)
+// }
 
 const Markdown = (props: { markdown: string }) => (
 	<div
 		class={styles.markdown}
 		ref={setRef}
-		innerHTML={markdown(latex(props.markdown))}
+		innerHTML={markdown(props.markdown)}
 	/>
 )
-
 const NotFoundFallback = () => (
 	<>
 		<HttpStatusCode code={404} />
@@ -77,28 +74,21 @@ const IndexPage = (props: { path: string; subject: string }) => {
 const NotePage = (props: RouteSectionProps) => {
 	const note = createAsync(() => getNote(props.location.pathname))
 	const subject = () => getTitle(props.location.pathname)
-	const title = () => subject()
+	const url = () =>
+		`https://${BASE_URL}${decodeURIComponent(props.location.pathname)}`
 	return (
-		<ErrorBoundary
-			fallback={(error) => <ErrorFallbackPage error={error} />}
-		>
-			<Title>{title()}</Title>
-			<Meta name="og:title" content={title()} />
-			<Link
-				rel="canonical"
-				href={`https://${BASE_URL}${decodeURIComponent(
-					props.location.pathname
-				)}`}
-			/>
-			{/* <TableOfContents contentsRef={ref()} /> */}
+		<>
+			<Title>{subject()}</Title>
+			<Meta name="og:title" content={subject()} />
+			<Link rel="canonical" href={url()} />
 			<Show
 				when={note()}
-				fallback={
-					<IndexPage
-						path={props.location.pathname}
-						subject={subject()}
-					/>
-				}
+				// fallback={
+				// 	<IndexPage
+				// 		path={props.location.pathname}
+				// 		subject={subject()}
+				// 	/>
+				// }
 			>
 				{(note) => (
 					<>
@@ -112,52 +102,8 @@ const NotePage = (props: RouteSectionProps) => {
 					</>
 				)}
 			</Show>
-		</ErrorBoundary>
+		</>
 	)
 }
-
-// type TocItem = { level: string; title: string; children?: TocItem[] }
-
-// const createTableOfContents = (ref: HTMLDivElement | undefined) => {
-// 	const contents: TocItem[] = []
-// 	if (ref) {
-// 		const headings = ref.querySelectorAll("h1, h2, h3, h4, h5")
-// 		for (const heading of headings) {
-// 			const { tagName, textContent } = heading
-// 			if (textContent) {
-// 				contents.push({
-// 					level: tagName.substring(1, 2),
-// 					title: textContent
-// 				})
-// 			}
-// 		}
-// 	}
-// 	return contents
-// }
-
-// const TableOfContents = (props: {
-// 	contentsRef: HTMLDivElement | undefined
-// }) => {
-// 	const [items, setItems] = createSignal<TocItem[]>([])
-
-// 	onMount(() => {
-// 		if (props.contentsRef) {
-// 			setItems(createTableOfContents(props.contentsRef))
-// 		}
-// 	})
-
-// 	return (
-// 		<ol>
-// 			<p>{JSON.stringify(props.contentsRef?.textContent)}</p>
-// 			<For each={items()}>
-// 				{(toc) => (
-// 					<li>
-// 						<button>{toc.title}</button>
-// 					</li>
-// 				)}
-// 			</For>
-// 		</ol>
-// 	)
-// }
 
 export default NotePage

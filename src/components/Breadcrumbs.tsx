@@ -1,11 +1,11 @@
 import { Show, For } from "solid-js"
-import { A, useParams } from "@solidjs/router"
+import { A, useLocation } from "@solidjs/router"
 import styles from "./breadcrumbs.module.css"
 
 const createPaths = () => {
-	const params = useParams() // already URI-encoded
+	const location = useLocation() // already URI-encoded
 
-	const paths = params.note?.split("/")
+	const paths = location.pathname.split("/").filter(Boolean)
 
 	if (!paths) return
 

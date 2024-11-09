@@ -1,5 +1,12 @@
 import { defineConfig } from "@solidjs/start/config"
 
 export default defineConfig({
-    server: { preset: "vercel" }
+    server: {
+        preset: "vercel",
+        esbuild: {
+            options: {
+                target: 'ESNext'
+            }
+        }
+    }
 })
