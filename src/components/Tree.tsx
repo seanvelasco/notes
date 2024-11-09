@@ -1,7 +1,8 @@
-import { For, Show, createSignal } from "solid-js"
+import { For, Show, createEffect, createSignal } from "solid-js"
 import { A, useLocation } from "@solidjs/router"
 import Chevron from "./Chevron"
 import { ALLOWED_FILES } from "~/lib/constants"
+import { useMatch } from "@solidjs/router"
 import styles from "./tree.module.css"
 import type { Leaf, Branch, Tree } from "~/types"
 
@@ -33,9 +34,22 @@ const Leaf = (props: { leaf: Leaf }) => (
 const Branch = (props: { branch: Branch }) => {
 	const location = useLocation()
 
-	const [expanded, setExpanded] = createSignal(
-		location.pathname.includes(props.branch.path)
+	const segments = location.pathname.split("/").filter((path) => path)
+	const paths = segments.map(
+		(_, index) => "/" + segments.slice(0, index + 1).join("/")
 	)
+
+	const [expanded, setExpanded] = createSignal(
+		paths.includes(props.branch.path)
+	)
+
+	// const match = useMatch()
+
+	createEffect(() => {
+		if (paths.includes(props.branch.path)) {
+			setExpanded(true)
+		}
+	})
 
 	const toggle = () => setExpanded(!expanded())
 
@@ -61,7 +75,7 @@ const Branch = (props: { branch: Branch }) => {
 					<div
 						class={styles.line}
 						style={{
-							"--chevron-placeholder": "1.25rem", // added owing to lack of chevron
+							"--chevron-placeholder": "1.125rem", // added owing to lack of chevron
 							"--offset": `calc(${
 								depth(props.branch.path) === 0
 									? 0
