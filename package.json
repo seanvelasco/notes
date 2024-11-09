@@ -11,14 +11,12 @@
 	"dependencies": {
 		"@solid-primitives/storage": "^2.1.1",
 		"@solidjs/meta": "^0.29.4",
-		"@solidjs/router": "^0.13.6",
-		"@solidjs/start": "^1.0.2",
-		"@wooorm/starry-night": "^3.5.0",
-		"hast-util-to-dom": "^4.0.0",
+		"@solidjs/router": "^0.15.1",
+		"@solidjs/start": "^1.0.10",
 		"katex": "^0.16.11",
+		"markdown-it": "^14.1.0",
 		"pixi-viewport": "^5.0.3",
 		"pixi.js": "^8.5.2",
-		"snarkdown": "^2.0.0",
 		"solid-js": "^1.8.17",
 		"unstorage": "^1.10.2",
 		"vinxi": "^0.3.12"
@@ -27,6 +25,9 @@
 		"node": ">=20"
 	},
 	"devDependencies": {
-		"@types/katex": "^0.16.7"
+		"@shikijs/markdown-it": "^1.22.2",
+		"@types/katex": "^0.16.7",
+		"@types/markdown-it": "^14.1.2",
+		"shiki": "^1.22.2"
 	}
 }
