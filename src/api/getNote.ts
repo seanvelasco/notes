@@ -1,6 +1,6 @@
-import { cache } from "@solidjs/router"
+import { query } from "@solidjs/router"
 import { note } from "~/lib/storage"
 
-const getNote = cache(async (path: string) => await note(path), "note")
+const getNote = query(async (path: string) => await note(path), "note")
 
 export default getNote

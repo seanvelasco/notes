@@ -1,6 +1,6 @@
-import { cache } from "@solidjs/router"
+import { query } from "@solidjs/router"
 import { root } from "~/lib/storage"
 
-const getTree = cache(async () => await root(), "root")
+const getTree = query(async () => await root(), "root")
 
 export default getTree
