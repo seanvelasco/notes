@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { HOSTNAME } from '$lib/constants'
+	import { HOSTNAME, image, audio, video, document } from '$lib/constants'
 	// import 'katex/dist/katex.min.css'
 	export let data
 </script>
 
-<div class:index={data.index} class:note={data.body}>
+<div class:index={data.index} class:note={data.body} class:pdf={data?.extension === 'pdf'}>
 	{#if data.body !== undefined}
 		<h1>{data.title}</h1>
 		{#if data.body}
@@ -28,7 +28,24 @@
 			</a>
 		{/each}
 	{:else if data.extension}
-		<img alt={data.title} src="{$page.params.notes}.{data.extension}" />
+		{@const src = `${$page.params.notes}.${data.extension}`}
+		{#if image.includes(data.extension)}
+			<img alt={data.title} {src} />
+		{:else if video.includes(data.extension)}
+			<!-- svelte-ignore a11y_media_has_caption -->
+			<video controls>
+				<source {src} type="video/{data.extension}" />
+				Your browser does not support the video tag.
+			</video>
+		{:else if audio.includes(data.extension)}
+			{@const extension = data.extension === 'mp3' ? 'mpeg' : data.extension}
+			<audio controls={true}>
+				<source {src} type="audio/{extension}" />
+				Your browser does not support the audio element.
+			</audio>
+		{:else if document.includes(data.extension)}
+			<object title={data.title} data={src}> </object>
+		{/if}
 	{/if}
 </div>
 
@@ -41,10 +58,34 @@
 		<meta name="og:title" content="Notes" />
 	{/if}
 	<meta name="og:url" content="https://{HOSTNAME}/{$page.params.notes}" />
-	<link rel="canonical" href="https://${HOSTNAME}/${$page.params.notes}" />
+	<link rel="canonical" href="https://${HOSTNAME}/{$page.params.notes}" />
 </svelte:head>
 
 <style>
+	audio {
+		width: 100%;
+	}
+	video {
+		height: 100%;
+		width: fit-content;
+	}
+	object {
+		width: 100%;
+		/* aspect-ratio: 4 / 3;
+		 */
+		height: 100%;
+	}
+	/* div:not(.index, .note) img {
+		height: 100%;
+		width: fit-content;
+	} */
+	div {
+		height: 100%;
+		align-self: center;
+	}
+	div:not(.index, .note) {
+		align-items: center;
+	}
 	footer {
 		display: flex;
 		align-items: center;
@@ -84,10 +125,16 @@
 	div {
 		display: flex;
 		flex-direction: column;
-		max-width: 47.5rem;
 		width: 100%;
 		padding: 1rem 2rem;
 		color: var(--text-primary);
+	}
+	.note,
+	.index {
+		max-width: 47.5rem;
+	}
+	.pdf {
+		padding: 0;
 	}
 	:global(a) {
 		color: var(--link);

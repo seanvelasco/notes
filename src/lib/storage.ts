@@ -41,12 +41,18 @@ export const index = async (path: string) => {
 
 export const note = async (path: string) => {
 	const keys = await storage.getKeys()
-	const paths = keys.map((key) => {
-		const pathname = key.split(':').join('/')
-		const [path, ...extensions] = pathname.split('.')
-		const extension = extensions.join('.')
-		return { path: `/${path}`, extension }
-	})
+	const paths = keys
+		.map((key) => {
+			const pathname = key.split(':').join('/')
+			const [path, ...extensions] = pathname.split('.')
+			const filename = path.split('/').at(-1)
+			if (!filename) {
+				return
+			}
+			const extension = extensions.join('.')
+			return { path: `/${path}`, extension }
+		})
+		.filter((path) => path !== undefined)
 	const found = paths.find((p) => p.path === decodeURIComponent(path))
 	if (found) {
 		if (found.extension === 'md') {

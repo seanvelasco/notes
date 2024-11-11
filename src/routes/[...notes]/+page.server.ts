@@ -9,20 +9,22 @@ export const load = async ({ url, params }) => {
 	const file = await note(url.pathname)
 	if (!file) {
 		const tree = await index(url.pathname)
-		if (!tree) error(404)
+		if (!tree) {
+			error(404, { message: 'Not found' })
+		}
 		return {
 			title,
 			index: tree
 		}
+	}
+	if (!allowed.includes(file.extension)) {
+		error(400, { message: `.${file.extension} files not allowed` })
 	}
 	if (file.extension !== 'md') {
 		return {
 			title,
 			extension: file.extension
 		}
-	}
-	if (!allowed.includes(file.extension)) {
-		error(400, { message: `.${file.extension} files not allowed` })
 	}
 	if (file.content !== undefined) {
 		return {

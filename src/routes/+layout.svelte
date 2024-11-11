@@ -47,9 +47,7 @@
 			</button>
 		</ul>
 	</header>
-	<main>
-		{@render children()}
-	</main>
+	{@render children()}
 </div>
 
 <style>
@@ -92,6 +90,8 @@
 		height: 1.125rem;
 	}
 	div {
+		display: flex;
+		flex-direction: column;
 		height: 100%;
 		width: 100%;
 		overflow-y: auto;
@@ -123,10 +123,11 @@
 		background-color: var(--background-primary);
 		padding: 0 0.5rem;
 	}
-	main {
+	/* main {
+		position: relative;
 		display: flex;
 		justify-content: center;
-		/* margin-bottom: 4rem; */
+		margin-bottom: 4rem;
 		width: 100%;
-	}
+	} */
 </style>

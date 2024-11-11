@@ -22,6 +22,7 @@
 
 <style>
 	.extension {
+		flex-shrink: 0;
 		background-color: var(--leaf);
 		border-radius: 4px;
 		text-transform: uppercase;
@@ -37,7 +38,7 @@
 		flex-direction: row;
 		align-items: center;
 		border-radius: 0.5rem;
-		padding: 0.25rem 0;
+		padding: 0.25rem 0.5rem;
 		cursor: pointer;
 		user-select: none;
 		color: var(--text-secondary);
@@ -56,6 +57,6 @@
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		padding-left: 0.5rem;
+		/* padding-left: 0.5rem; */
 	}
 </style>
