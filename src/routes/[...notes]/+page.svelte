@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 	import { HOSTNAME } from '$lib/constants'
-	import 'katex/dist/katex.min.css'
+	// import 'katex/dist/katex.min.css'
 	export let data
 </script>
 
