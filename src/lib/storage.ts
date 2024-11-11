@@ -21,7 +21,7 @@ const options = {
 	repo: env.GITHUB_REPO as string,
 	branch: env.GITHUB_BRANCH || 'main',
 	dir: env.GITHUB_DIR || '/',
-	token: env.VITE_GITHUB_KEY as string
+	token: env.GITHUB_KEY as string
 }
 
 const storage = createStorage({ driver: driver(options) })
