@@ -1,0 +1,31 @@
+// const createDirectoryTree = (paths: string[]) => {
+//     const tree: Node[] = []
+//     for (const path of paths) {
+//         let currentNode = tree
+//         const parts = path.replace(/\.[^/.]+$/, "").split(":")
+//         for (const part of parts) {
+//             const fileNameWithExtension = part.split(/[/\\]/).pop() as string
+//             const [filename, ...extensions] = fileNameWithExtension.split('.')
+//             const extension = extensions.join(".")
+//             const existingNode = currentNode.find((node) => node.title === filename)
+//             if (existingNode) {
+//                 currentNode = existingNode.children
+//             } else {
+//                 const nodePath = `/${parts
+//                     .slice(0, parts.indexOf(part) + 1)
+//                     .join("/")}`f
+
+
+//                 const node = {
+//                     title: filename,
+//                     path: nodePath,
+//                     children: [],
+//                     extension
+//                 }
+//                 currentNode.push(node)
+//                 currentNode = node.children
+//             }
+//         }
+//     }
+//     return tree
+// }

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		%sveltekit.head%
+	</head>
+
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+	<style>
+		:root {
+			font-family: system-ui, Helvetica, Arial, sans-serif;
+			font-optical-sizing: auto;
+			line-height: 1.3;
+			font-weight: normal;
+			color-scheme: light dark;
+			font-synthesis: none;
+			text-rendering: optimizeLegibility;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			--background-primary: #ffffff;
+			--background-secondary: #f6f6f6;
+			--background-tertiary: #fafafa;
+			--border-primary: #c8c8c8;
+			--border-secondary: #e0e0e0;
+			--text-primary: #222222;
+			--text-secondary: #5c5c5c;
+			--link: #5c82f5;
+			--bullet: #ababab;
+			--active-breadcrumb: black;
+			--leaf: rgba(0, 0, 0, 0.075);
+			--thread: rgba(0, 0, 0, 0.12);
+		}
+
+		@media (prefers-color-scheme: dark) {
+			:root {
+				--background-primary: #1e1e1e;
+				--background-secondary: #262626;
+				/*--background-tertiary: #363636;*/
+				--background-tertiary: #242424;
+				--background-quaternary: #666666;
+				--border-primary: #4f4f4f;
+				--border-secondary: #363636;
+				--text-primary: #dadada;
+				--text-secondary: #b3b3b3;
+				--link: #8aacf9;
+				--bullet: #666666;
+				--active-breadcrumb: white;
+				--leaf: rgba(255, 255, 255, 0.075);
+				--thread: rgba(255, 255, 255, 0.12);
+			}
+		}
+
+		body {
+			margin: 0;
+			height: 100dvh;
+			display: flex;
+			width: 100%;
+		}
+
+		a,
+		button {
+			all: unset;
+		}
+
+		a {
+			cursor: pointer;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		::selection {
+			background-color: hsla(225, 88%, 66%, 0.25);
+		}
+
+		.shiki,
+		.shiki span {
+			background-color: var(--background-tertiary) !important;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			.shiki,
+			.shiki span {
+				color: var(--shiki-dark) !important;
+				font-style: var(--shiki-dark-font-style) !important;
+				font-weight: var(--shiki-dark-font-weight) !important;
+				text-decoration: var(--shiki-dark-text-decoration) !important;
+			}
+		}
+	</style>
+</html>
