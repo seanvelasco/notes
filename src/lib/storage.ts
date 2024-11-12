@@ -1,8 +1,6 @@
-import { createStorage } from 'unstorage'
-import driver from 'unstorage/drivers/github'
+import storage from './x'
 import { ALLOWED_FILES, allowed } from './constants'
 import type { Node } from '../types'
-import { env } from '$env/dynamic/private'
 
 const getExtension = (filePath: string) => {
 	const fileNameWithExtension = filePath.split(/[/\\]/).pop() as string
@@ -16,15 +14,6 @@ const traverseToDepth = (nodes: Node[], depth: number): Node[] => {
 	if (depth === 0 || nodes.length === 0) return nodes
 	return traverseToDepth(node.children, depth - 1)
 }
-
-const options = {
-	repo: env.GITHUB_REPO as string,
-	branch: env.GITHUB_BRANCH || 'main',
-	dir: env.GITHUB_DIR || '/',
-	token: env.GITHUB_KEY as string
-}
-
-const storage = createStorage({ driver: driver(options) })
 
 export const index = async (path: string) => {
 	path = decodeURIComponent(path)
@@ -102,13 +91,15 @@ const createDirectoryTree = (paths: string[]) => {
 
 export const root = async () => {
 	const keys = await storage.getKeys()
-	const files = keys
-		.map((note) => {
-			const extension = getExtension(note)
-			if (allowed.includes(extension)) {
-				return note
-			}
-		})
-		.filter((note) => note !== undefined)
-	return createDirectoryTree(files)
+	if (keys) {
+		const files = keys
+			.map((note) => {
+				const extension = getExtension(note)
+				if (allowed.includes(extension)) {
+					return note
+				}
+			})
+			.filter((note) => note !== undefined)
+		return createDirectoryTree(files)
+	}
 }

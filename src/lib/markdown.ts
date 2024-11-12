@@ -40,7 +40,8 @@ const inline = (markdown: string) =>
 const latex = (markdown: string) => inline(block(markdown))
 
 const shiki = await Shiki({
-	themes: { light: 'github-light-default', dark: 'github-dark-default' }
+	themes: { light: 'github-light-default', dark: 'github-dark-default' },
+	fallbackLanguage: 'bash'
 })
 
 parser.use(shiki).use(normalizeLang)

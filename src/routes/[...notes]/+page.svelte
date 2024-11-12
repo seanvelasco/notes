@@ -5,18 +5,26 @@
 	export let data
 </script>
 
-<div class:index={data.index} class:note={data.body} class:pdf={data?.extension === 'pdf'}>
+<div
+	class:index={data.index}
+	class:note={data.body !== undefined}
+	class:pdf={data?.extension === 'pdf'}
+	class:image={image.includes(data?.extension || '')}
+	class:video={video.includes(data?.extension || '')}
+>
 	{#if data.body !== undefined}
-		<h1>{data.title}</h1>
-		{#if data.body}
-			{@html data.body}
-			<footer>
-				<span>{data.words} words</span>
-				<span>{data.characters} characters</span>
-			</footer>
-		{:else if data.body === ''}
-			<p>This page is empty</p>
-		{/if}
+		<main>
+			<h1>{data.title}</h1>
+			{#if data.body}
+				{@html data.body}
+				<footer>
+					<span>{data.words} words</span>
+					<span>{data.characters} characters</span>
+				</footer>
+			{:else if data.body === ''}
+				<p>This page is empty</p>
+			{/if}
+		</main>
 	{:else if data.index}
 		<h1>{data.title}</h1>
 		{#each data.index as { title, path, children }}
@@ -62,13 +70,19 @@
 </svelte:head>
 
 <style>
+	div {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		padding: 1rem 2rem;
+		color: var(--text-primary);
+		height: 100%;
+		align-self: center;
+	}
 	audio {
 		width: 100%;
 	}
-	video {
-		height: 100%;
-		width: fit-content;
-	}
+
 	object {
 		width: 100%;
 		/* aspect-ratio: 4 / 3;
@@ -79,12 +93,13 @@
 		height: 100%;
 		width: fit-content;
 	} */
-	div {
-		height: 100%;
-		align-self: center;
+
+	.note,
+	.index {
+		max-width: 47.5rem;
 	}
-	div:not(.index, .note) {
-		align-items: center;
+	.pdf {
+		padding: 0;
 	}
 	footer {
 		display: flex;
@@ -122,26 +137,13 @@
 		text-decoration-color: rgba(255, 255, 255, 0.13);
 		width: fit-content;
 	}
-	div {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		padding: 1rem 2rem;
-		color: var(--text-primary);
-	}
-	.note,
-	.index {
-		max-width: 47.5rem;
-	}
-	.pdf {
-		padding: 0;
-	}
+
 	:global(a) {
 		color: var(--link);
 	}
-	:global(p, a, li, blockquote) {
+	/* :global(p, a, li, blockquote) {
 		font-size: 0.875rem;
-	}
+	} */
 	:global(blockquote) {
 		border-left: 2px solid var(--background-tertiary);
 		border-color: #5c82f5;
@@ -169,6 +171,7 @@
 	}
 	:global(table) {
 		display: block;
+		min-height: 100%;
 		border-collapse: collapse;
 		border-spacing: 0;
 		line-height: 1.3;
@@ -207,7 +210,37 @@
 	:global(ol) {
 		padding-left: 2rem;
 	}
-	:global(h1) {
-		font-size: 1.675rem;
+	img:not(.note) {
+		width: fit-content;
+		max-width: 100%;
+	}
+	.image {
+		align-items: center;
+	}
+	.video {
+		padding: 0;
+		position: relative;
+	}
+	video {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+	}
+	main {
+		position: absolute;
+		margin: 0;
+		width: 100%;
+		padding: 1rem 2rem;
+		padding-bottom: 20rem;
+	}
+	.note {
+		position: relative;
+		height: 100%;
+		width: 100%;
+		padding-bottom: 10rem;
+		padding: 0;
+		/* margin-bottom: 4rem; */
 	}
 </style>
